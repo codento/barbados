@@ -1,0 +1,3 @@
+Host github.com
+        LogLevel DEBUG
+        IdentityFile /root/.ssh/id_rsa
