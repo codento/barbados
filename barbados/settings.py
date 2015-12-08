@@ -46,6 +46,7 @@ INSTALLED_APPS = (
     'django.contrib.staticfiles',
     'pipeline',
     'django_extensions',
+    'barbados.barbadosdb',
 )
 
 
