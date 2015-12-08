@@ -1,0 +1,62 @@
+There exist many Clubs.
+
+A Club has:
+  - name: string
+  - members: many Members
+  - harbours: many Harbours
+  And various other stuff like address we probably don't care about for this
+  demo.
+
+A Member has:
+  - first name: string
+  - last name: string
+  - street_address: string
+  - postcode: string (with constraints?)
+  - city: string
+  - country: string
+  - phone_number: string (with constraints?)
+  - email: string (with constraints?)
+  - birth date: Date
+  - joining date: Date
+  - boats: many Boats
+  Let's make only first name, last name, email and joining_date mandatory.
+
+A Harbour has:
+  - name: string
+  - jetties: many Jetties
+  And various other stuff like address we probably don't care about for this
+  demo.
+
+A Jetty has:
+  - name: string (e.g. a letter, 'D')
+  - berths: many Berths
+  We may also need attributes for e.g. number of sides (1 or 2) and numbering
+  scheme (e.g. odd one side, even the other), if we do a graphical view.
+
+A Berth has:
+  - name: string (e.g. 'D10')
+  - boat: zero or one Boats
+  And perhaps we'll need a type, e.g. small/large, let's not worry about that
+  initially.
+
+A Boat has:
+  - name: string
+  - type: enum: sailboat or motorboat
+  - model: string (e.g. 'Maxi 999')
+  - manufacturer: string
+  - manufacturing country: string
+  - registration_number: string (unique; with constraints?)(e.g. 'A12345')
+  - sail number: integer (optional, e.g. 1234)
+  - boat certificate number: int (e.g. 1503)
+  - length: int (in centimetres, e.g. 990, display as metres)
+  - beam: int (i.e. width)
+  - height: int (i.e. mast height, in centimetres, e.g. 1490, display as metres)
+  - draught: int (i.e. keel depth, in centimetres, e.g. 170, display as metres)
+  - weight: int (in kilograms, e.g. 4200, display as tonnes (1 tonne = 1000kg))
+  - material: enum: fibreglass, wood, metal or other
+  - colour: string (e.g. 'white')
+  - inspection class: int (1=offshore, 2=coastal, 3=archipelago)
+  - inspection year: int
+  - hull inspection year: int
+  - insurance company: string (e.g. Pohjola)
+  That's enough to start with. Let's make no fields mandatory.
