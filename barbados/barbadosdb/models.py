@@ -1,8 +1,30 @@
+from django.contrib.auth import models as auth_models
 from django.db import models
 
 import uuid
 
 # Create your models here.
+
+
+class User(auth_models.AbstractUser):
+    """Corresponds to Member in the spec
+    date_joined and some others inherited from AbstractUser
+    """
+
+    id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
+
+    birth_date = models.DateField(null=True, blank=True, default=None)
+
+    phone_number = models.CharField(max_length=24)
+
+    # Make this pretty free-form for compatibility with different countries
+    street_address = models.TextField(null=True, blank=True, default=None)
+
+    city = models.CharField(max_length=64, null=True, blank=True, default=None)
+    country_code = models.CharField(max_length=2, null=True, blank=True, default='FI')
+
+    class Meta:
+        app_label = 'barbadosdb'
 
 
 class Club(models.Model):

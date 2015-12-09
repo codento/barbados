@@ -99,6 +99,9 @@ DATABASES = {
     }
 }
 
+# Custom user model; create one-to-one or proxy if you need to extend this
+AUTH_USER_MODEL = 'barbadosdb.User'
+
 # Password validation
 # https://docs.djangoproject.com/en/dev/ref/settings/#auth-password-validators
 
