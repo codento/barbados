@@ -3,6 +3,21 @@ from django.db import models
 
 import uuid
 
+
+class PhoneNumberField(models.CharField):
+    """Add rules about phone numbers here
+    """
+
+    def validate(self, value, instance):
+        """Check the value
+        """
+
+        super().validate(value, instance)
+
+        if not value.startswith('+'):
+            raise ValueError('Use international format with phone numbers')
+
+
 # Create your models here.
 
 
@@ -15,7 +30,7 @@ class User(auth_models.AbstractUser):
 
     birth_date = models.DateField(null=True, blank=True, default=None)
 
-    phone_number = models.CharField(max_length=24)
+    phone_number = PhoneNumberField(max_length=24)
 
     # Make this pretty free-form for compatibility with different countries
     street_address = models.TextField(null=True, blank=True, default=None)
