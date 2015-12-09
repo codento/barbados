@@ -1,4 +1,5 @@
 from django.contrib.auth import models as auth_models
+from django.utils.translation import ugettext_lazy as _
 from django.db import models
 
 import uuid
@@ -15,7 +16,7 @@ class PhoneNumberField(models.CharField):
         super().validate(value, instance)
 
         if not value.startswith('+'):
-            raise ValueError('Use international format with phone numbers')
+            raise ValueError(_('Use international format with phone numbers'))
 
 
 # Create your models here.
