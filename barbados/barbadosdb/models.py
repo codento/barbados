@@ -5,11 +5,25 @@ import uuid
 # Create your models here.
 
 
+class Club(models.Model):
+    """Members of Harbours, with extra data
+    """
+
+    id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
+
+    name = models.CharField(max_length=64, db_index=True)
+
+    class Meta:
+        app_label = 'barbadosdb'
+
+
 class Harbour(models.Model):
     """The topmost model
     """
 
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
+
+    club = models.ForeignKey(Club)
 
     name = models.CharField(max_length=64, db_index=True)
 
