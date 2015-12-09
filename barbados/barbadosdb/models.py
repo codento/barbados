@@ -4,6 +4,7 @@ from django.utils.translation import ugettext_lazy as _
 from django.db import models
 
 import uuid
+import re
 from datetime import date
 
 
@@ -50,7 +51,7 @@ class InspectionYearField(models.IntegerField):
         super.validate(value, instance)
 
         if value is not None and \
-            (value < 1000 or value > date.today().year):
+                (value < 1000 or value > date.today().year):
             raise ValidationError(_(
                 'Inspection date must be 4-digit year and not in future'))
 
@@ -151,7 +152,7 @@ class Boat(models.Model):
         choices=[(None, EMPTY_CHOICE_DISPLAY_VALUE)] + list(INSPECTION_CLASSES),
         default=None
     )
- 
+
     inspection_year = InspectionYearField(null=True, blank=True, default=None)
 
     hull_inspection_year = InspectionYearField(
