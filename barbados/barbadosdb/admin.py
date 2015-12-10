@@ -1,4 +1,5 @@
 from django.contrib.auth.admin import UserAdmin
+from django.core.urlresolvers import reverse
 from django.utils.translation import ugettext_lazy as _
 from django.contrib import admin
 
@@ -24,19 +25,36 @@ class CustomUserAdmin(UserAdmin):
 
 
 @admin.register(models.Club)
-@admin.register(models.Harbour)
-@admin.register(models.Jetty)
-class SimpleAdmin(admin.ModelAdmin):
-    """Completely uncustomised admin
+class ClubAdmin(admin.ModelAdmin):
+    """Club administration
     """
 
-    pass
+    list_display = ('name',)
+
+
+@admin.register(models.Harbour)
+class HarbourAdmin(admin.ModelAdmin):
+    """Harbours
+    """
+
+    list_display = ('name', 'club')
+
+
+@admin.register(models.Jetty)
+class JettyAdmin(admin.ModelAdmin):
+    """Administer jetties
+    """
+
+    list_display = ('name', 'harbour')
 
 
 @admin.register(models.Berth)
 class BerthAdmin(admin.ModelAdmin):
     """Deal with field order
     """
+
+    # XXX: This is probably a database hammer
+    list_display = ('name', 'jetty', lambda self: self.jetty.harbour)
 
     fieldsets = (
         (None, {'fields':
@@ -50,5 +68,13 @@ class BoatAdmin(admin.ModelAdmin):
     """The thing that floats
     """
 
-    pass
+    def edit_link(self):
+        """Name and registration can be empty but we need access
+        """
+
+        return '<a href={}>Edit</a>'.format(reverse('admin:barbadosdb_boat_change', args=(self.pk,)))
+    edit_link.allow_tags = True
+    edit_link.short_description = _('Edit link')
+
+    list_display = ('name', 'registration_number', 'sail_number', 'user', edit_link)
 
