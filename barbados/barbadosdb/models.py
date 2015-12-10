@@ -134,9 +134,9 @@ class Boat(models.Model):
 
     height = models.IntegerField(null=True, blank=True, default=None)
 
-    draught = models.IntegerField(null=True, blank=True, default=True)
+    draught = models.BooleanField(null=False, blank=False, default=True)
 
-    weight = models.IntegerField(null=True, blank=True, default=True)
+    weight = models.BooleanField(null=False, blank=False, default=True)
 
     material = models.CharField(
         max_length=1,
