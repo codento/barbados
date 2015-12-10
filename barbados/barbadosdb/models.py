@@ -128,15 +128,15 @@ class Boat(models.Model):
     boat_certificate_number = models.IntegerField(
         null=True, blank=True, default=None)
 
-    length = models.IntegerField(null=True, blank=True, default=None)
+    length = models.IntegerField(help_text=_('Centimetres'), null=True, blank=True, default=None)
 
-    beam = models.IntegerField(null=True, blank=True, default=None)
+    beam = models.IntegerField(help_text=_('Centimetres'), null=True, blank=True, default=None)
 
-    height = models.IntegerField(null=True, blank=True, default=None)
+    height = models.IntegerField(help_text=_('Centimetres'), null=True, blank=True, default=None)
 
-    draught = models.IntegerField(null=True, blank=True, default=None)
+    draught = models.IntegerField(help_text=_('Centimetres'), null=True, blank=True, default=None)
 
-    weight = models.IntegerField(null=True, blank=True, default=None)
+    weight = models.IntegerField(help_text=_('Kilograms'), null=True, blank=True, default=None)
 
     material = models.CharField(
         max_length=1,
@@ -235,3 +235,4 @@ class Berth(models.Model):
 
     def __str__(self):
         return self.name
+
