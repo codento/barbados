@@ -163,6 +163,9 @@ class Boat(models.Model):
     class Meta:
         app_label = 'barbadosdb'
 
+    def __str__(self):
+        return self.name
+
 
 class Club(models.Model):
     """Members of Harbours, with extra data
@@ -174,6 +177,9 @@ class Club(models.Model):
 
     class Meta:
         app_label = 'barbadosdb'
+
+    def __str__(self):
+        return self.name
 
 
 class Harbour(models.Model):
@@ -189,6 +195,9 @@ class Harbour(models.Model):
     class Meta:
         app_label = 'barbadosdb'
 
+    def __str__(self):
+        return self.name
+
 
 class Jetty(models.Model):
     """Jetties in the Harbours
@@ -203,6 +212,9 @@ class Jetty(models.Model):
     class Meta:
         app_label = 'barbadosdb'
         unique_together = ('harbour', 'name')
+
+    def __str__(self):
+        return self.name
 
 
 class Berth(models.Model):
@@ -220,3 +232,7 @@ class Berth(models.Model):
     class Meta:
         app_label = 'barbadosdb'
         unique_together = ('jetty', 'name')
+
+    def __str__(self):
+        return self.name
+
