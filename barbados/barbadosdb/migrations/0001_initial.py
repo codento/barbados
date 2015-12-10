@@ -59,7 +59,7 @@ class Migration(migrations.Migration):
             fields=[
                 ('id', models.UUIDField(default=uuid.uuid4, editable=False, primary_key=True, serialize=False)),
                 ('name', models.CharField(blank=True, db_index=True, default=b'', max_length=64)),
-                ('boat_type', models.CharField(blank=True, choices=[(b'', b'--------'), (b'M', b'Motorboat'), (b'S', b'Sailboat')], db_column=b'type', default=b'', max_length=1)),
+                ('boat_type', models.CharField(blank=True, choices=[(b'', b'--------'), (b'M', b'Motorboat'), (b'S', b'Sailboat')], db_column='type', default=b'', max_length=1)),
                 ('model', models.CharField(blank=True, default=b'', max_length=64)),
                 ('manufacturer', models.CharField(blank=True, default=b'', max_length=64)),
                 ('registration_number', barbados.barbadosdb.models.RegistrationNumberField(blank=True, default=b'', max_length=6)),
