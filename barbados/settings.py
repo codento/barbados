@@ -28,6 +28,7 @@ TEMPLATE_DEBUG = False
 
 ALLOWED_HOSTS = [
     '127.0.0.1',
+    'localhost',
 ]
 
 
@@ -45,7 +46,7 @@ INSTALLED_APPS = (
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'pipeline',
-    'django_extensions',
+    'barbados.barbadosdb',
 )
 
 
@@ -97,6 +98,9 @@ DATABASES = {
         'NAME': 'barbados',
     }
 }
+
+# Custom user model; create one-to-one or proxy if you need to extend this
+AUTH_USER_MODEL = 'barbadosdb.User'
 
 # Password validation
 # https://docs.djangoproject.com/en/dev/ref/settings/#auth-password-validators
