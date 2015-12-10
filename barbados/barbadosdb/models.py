@@ -134,9 +134,9 @@ class Boat(models.Model):
 
     height = models.IntegerField(null=True, blank=True, default=None)
 
-    draught = models.IntegerField(null=True, blank=True, default=True)
+    draught = models.IntegerField(null=True, blank=True, default=None)
 
-    weight = models.IntegerField(null=True, blank=True, default=True)
+    weight = models.IntegerField(null=True, blank=True, default=None)
 
     material = models.CharField(
         max_length=1,
@@ -235,4 +235,3 @@ class Berth(models.Model):
 
     def __str__(self):
         return self.name
-
