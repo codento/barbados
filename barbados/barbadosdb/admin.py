@@ -44,3 +44,11 @@ class BerthAdmin(admin.ModelAdmin):
         }),
     )
 
+
+@admin.register(models.Boat)
+class BoatAdmin(admin.ModelAdmin):
+    """The thing that floats
+    """
+
+    pass
+
