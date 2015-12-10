@@ -212,6 +212,7 @@ class Jetty(models.Model):
     class Meta:
         app_label = 'barbadosdb'
         unique_together = ('harbour', 'name')
+        verbose_name_plural = _('Jetties')
 
     def __str__(self):
         return self.name
