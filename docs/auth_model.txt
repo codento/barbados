@@ -1,0 +1,41 @@
+Admin:
+  - Club: CRUD
+  - Harbour: CRUD
+  - Jetty: CRUD
+  - Berth: CRUD
+  - User: CRUD
+  - Boat: CRUD
+
+Membership secretary:
+  - Club: xRxx
+  - Harbour: xRxx
+  - Jetty: xRxx
+  - Berth: xRxx
+  - User: CRUD
+  - Boat: CRUD
+
+Harbourmaster:
+  - Club: xRxx
+  - Harbour: xRxx
+  - Jetty: xRxx
+  - Berth: xRUx    (can update the foreign key reference to boat)
+  - User: xRxx
+  - Boat: xRxx
+
+Committee member:
+  - Club: xRxx
+  - Harbour: xRxx
+  - Jetty: xRxx
+  - Berth: xRxx
+  - User: xRxx
+  - Boat: xRxx
+
+User:
+  - Club: xRxx
+  - Harbour: xRxx
+  - Jetty: xRxx
+  - Berth: xRxx
+  - User: xRUx    (can only read own details; can update own address etc., but not name, joining date or birth date (affects pricing, cheaper for juniors))
+  - Boat: xRxx    (can read only own boat's details, can't modify as some details like length affect pricing)
+
+Note that a user will sometimes have more than one role, and they should have the union of those roles' rights. For instance (obvious case), the Harbourmaster can modify his own boat's details.
