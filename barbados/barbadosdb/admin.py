@@ -22,3 +22,25 @@ class CustomUserAdmin(UserAdmin):
         (_('Important dates'), {'fields': ('last_login', 'date_joined')}),
     )
 
+
+@admin.register(models.Club)
+@admin.register(models.Harbour)
+@admin.register(models.Jetty)
+class SimpleAdmin(admin.ModelAdmin):
+    """Completely uncustomised admin
+    """
+
+    pass
+
+
+@admin.register(models.Berth)
+class BerthAdmin(admin.ModelAdmin):
+    """Deal with field order
+    """
+
+    fieldsets = (
+        (None, {'fields':
+            ('name', 'jetty', 'boat'),
+        }),
+    )
+
