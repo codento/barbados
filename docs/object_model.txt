@@ -49,7 +49,7 @@ A Boat has:
   - sail number: integer (optional, e.g. 1234)
   - boat certificate number: int (e.g. 1503)
   - length: int (in centimetres, e.g. 990, display as metres)
-  - beam: int (i.e. width)
+  - beam: int (i.e. width in centimetres, display as metres)
   - height: int (i.e. mast height, in centimetres, e.g. 1490, display as metres)
   - draught: int (i.e. keel depth, in centimetres, e.g. 170, display as metres)
   - weight: int (in kilograms, e.g. 4200, display as tonnes (1 tonne = 1000kg))
