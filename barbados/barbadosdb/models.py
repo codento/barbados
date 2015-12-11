@@ -35,7 +35,7 @@ class RegistrationNumberField(models.CharField):
 
         super().validate(value, instance)
 
-        if len(value) > 0 and not re.match('[A-Z][0-9]{1-5}', value):
+        if len(value) > 0 and not re.match('[A-Z][0-9]{1,5}', value):
             raise ValidationError(_(
                 'Registration number must be blank or of form A12345'))
 
@@ -48,7 +48,7 @@ class InspectionYearField(models.IntegerField):
         """Check the value
         """
 
-        super.validate(value, instance)
+        super().validate(value, instance)
 
         if value is not None and \
                 (value < 1000 or value > date.today().year):
@@ -68,12 +68,13 @@ class User(auth_models.AbstractUser):
 
     birth_date = models.DateField(null=True, blank=True, default=None)
 
-    phone_number = PhoneNumberField(max_length=24)
+    phone_number = PhoneNumberField(max_length=24, blank=True, default='')
 
     # Make this pretty free-form for compatibility with different countries
     street_address = models.TextField(null=True, blank=True, default=None)
 
     city = models.CharField(max_length=64, null=True, blank=True, default=None)
+
     country_code = models.CharField(max_length=2, null=True, blank=True, default='FI')
 
     class Meta:
