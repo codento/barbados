@@ -12,7 +12,7 @@ HARBOUR_SUFFIXES = ['lahti', 'järvi', 'koski', 'nokka', 'niemi']
 
 
 # Factories
-class UserFactory(factory.Factory):
+class UserFactory(factory.DjangoModelFactory):
     class Meta:
         model = models.User
 
@@ -23,43 +23,43 @@ class UserFactory(factory.Factory):
     phone_number = factory.LazyAttribute(lambda x: '+358' + str(100000000 + random.randint(0, 899999999)))
 
 
-class BoatFactory(factory.Factory):
+class BoatFactory(factory.DjangoModelFactory):
     class Meta:
         model = models.Boat
 
-#    user = factory.SubFactory(UserFactory)
+    user = factory.SubFactory(UserFactory)
     name = factory.LazyAttribute(lambda x: faker.first_name_female())
-    registration_number = factory.Sequence(lambda n: chr((n % 26) + ord('A')) + str(10000 + n//26))
+    registration_number = factory.Sequence(lambda n: chr((n % 26) + ord('A')) + str(10000 + n // 26))
 
 
-class ClubFactory(factory.Factory):
+class ClubFactory(factory.DjangoModelFactory):
     class Meta:
         model = models.Club
 
     name = factory.Sequence(lambda n: faker.city_name() + CLUB_SUFFIXES[n % len(CLUB_SUFFIXES)])
 
 
-class HarbourFactory(factory.Factory):
+class HarbourFactory(factory.DjangoModelFactory):
     class Meta:
         model = models.Harbour
 
-#    club = factory.SubFactory(ClubFactory)
+    club = factory.SubFactory(ClubFactory)
     name = factory.Sequence(lambda n: faker.fruit() + HARBOUR_SUFFIXES[n % len(HARBOUR_SUFFIXES)])
 
 
-class JettyFactory(factory.Factory):
+class JettyFactory(factory.DjangoModelFactory):
     class Meta:
         model = models.Jetty
 
-#    harbour = factory.SubFactory(HarbourFactory)
+    harbour = factory.SubFactory(HarbourFactory)
     name = factory.sequence(lambda n: chr((n % 26) + ord('A')))
 
 
-class BerthFactory(factory.Factory):
+class BerthFactory(factory.DjangoModelFactory):
     class Meta:
         model = models.Berth
 
-#    jetty = factory.SubFactory(JettyFactory)
+    jetty = factory.SubFactory(JettyFactory)
     name = factory.Sequence(lambda n: str(n))
 
 
@@ -96,9 +96,8 @@ def test_create_a_club():
 
 @pytest.mark.django_db()
 def test_create_a_harbour():
-    c = ClubFactory.build()
-    c.save()
-    h = HarbourFactory.build(club=c)
+    h = HarbourFactory.build()
+    h.club.save()
     h.full_clean()
     h.save()
 
@@ -107,11 +106,8 @@ def test_create_a_harbour():
 
 @pytest.mark.django_db()
 def test_create_a_jetty():
-    c = ClubFactory.build()
-    c.save()
-    h = HarbourFactory.build(club=c)
-    h.save()
-    j = JettyFactory.build(harbour=h)
+    j = JettyFactory.build()
+    j.harbour.save()
     j.full_clean()
     j.save()
 
@@ -120,13 +116,8 @@ def test_create_a_jetty():
 
 @pytest.mark.django_db()
 def test_create_a_berth():
-    c = ClubFactory.build()
-    c.save()
-    h = HarbourFactory.build(club=c)
-    h.save()
-    j = JettyFactory.build(harbour=h)
-    j.save()
-    b = BerthFactory.build(jetty=j)
+    b = BerthFactory.build()
+    b.jetty.save()
     b.full_clean()
     b.save()
 
@@ -135,9 +126,8 @@ def test_create_a_berth():
 
 @pytest.mark.django_db()
 def test_create_a_boat():
-    u = UserFactory.build()
-    u.save()
-    b = BoatFactory.build(user=u)
+    b = BoatFactory.build()
+    b.user.save()
     b.full_clean()
     b.save()
 
@@ -145,9 +135,7 @@ def test_create_a_boat():
 @pytest.mark.django_db()
 def test_bad_boat_type():
     try:
-        u = UserFactory.build()
-        u.save()
-        b = BoatFactory.build(user=u, boat_type='X')
+        b = BoatFactory.build(boat_type='X')
         b.full_clean()
 
         pytest.fail(msg='Boat should not be valid')
@@ -158,9 +146,7 @@ def test_bad_boat_type():
 @pytest.mark.django_db()
 def test_bad_registration_number():
     try:
-        u = UserFactory.build()
-        u.save()
-        b = BoatFactory.build(user=u, registration_number='hello')
+        b = BoatFactory.build(registration_number='hello')
         b.full_clean()
 
         pytest.fail(msg='Boat should not be valid')
@@ -171,9 +157,7 @@ def test_bad_registration_number():
 @pytest.mark.django_db()
 def test_bad_material():
     try:
-        u = UserFactory.build()
-        u.save()
-        b = BoatFactory.build(user=u, material='X')
+        b = BoatFactory.build(material='X')
         b.full_clean()
 
         pytest.fail(msg='Boat should not be valid')
@@ -184,9 +168,7 @@ def test_bad_material():
 @pytest.mark.django_db()
 def test_bad_inspection_class():
     try:
-        u = UserFactory.build()
-        u.save()
-        b = BoatFactory.build(user=u, inspection_class=999)
+        b = BoatFactory.build(inspection_class=999)
         b.full_clean()
 
         pytest.fail(msg='Boat should not be valid')
@@ -197,9 +179,7 @@ def test_bad_inspection_class():
 @pytest.mark.django_db()
 def test_bad_inspection_year_too_short():
     try:
-        u = UserFactory.build()
-        u.save()
-        b = BoatFactory.build(user=u, inspection_year=15)
+        b = BoatFactory.build(inspection_year=15)
         b.full_clean()
 
         pytest.fail(msg='Boat should not be valid')
@@ -210,9 +190,7 @@ def test_bad_inspection_year_too_short():
 @pytest.mark.django_db()
 def test_bad_inspection_year_in_future():
     try:
-        u = UserFactory.build()
-        u.save()
-        b = BoatFactory.build(user=u, inspection_year=2030)
+        b = BoatFactory.build(inspection_year=2030)
         b.full_clean()
 
         pytest.fail(msg='Boat should not be valid')
@@ -223,9 +201,7 @@ def test_bad_inspection_year_in_future():
 @pytest.mark.django_db()
 def test_bad_hull_inspection_year_too_short():
     try:
-        u = UserFactory.build()
-        u.save()
-        b = BoatFactory.build(user=u, hull_inspection_year=15)
+        b = BoatFactory.build(hull_inspection_year=15)
         b.full_clean()
 
         pytest.fail(msg='Boat should not be valid')
@@ -236,11 +212,20 @@ def test_bad_hull_inspection_year_too_short():
 @pytest.mark.django_db()
 def test_bad_hull_inspection_year_in_future():
     try:
-        u = UserFactory.build()
-        u.save()
-        b = BoatFactory.build(user=u, hull_inspection_year=2030)
+        b = BoatFactory.build(hull_inspection_year=2030)
         b.full_clean()
 
         pytest.fail(msg='Boat should not be valid')
     except models.ValidationError:
         pass
+
+
+@pytest.mark.django_db()
+def test_assign_boat_to_berth():
+    boat = BoatFactory.create()
+    berth = BerthFactory.create()
+    berth.boat = boat
+    berth.save()
+    boat.refresh_from_db()
+    assert boat.berth == berth
+
