@@ -1,0 +1,106 @@
+1 Initialization
+As Admin I want to initialize the system
+ - create Club
+ - create Member with Admin access role
+
+2 Maintain system
+
+2.1 View Harbours for committee
+As Admin, Membership Secretary, Harbourmaster or Committee Member I want to see my Club and each of its Harbours, Jetties and Berths, showing which Boat is in which Berth
+
+2.2 View Harbours for Members
+As Member I want to see my Club and each of its Harbours, Jetties and Berths, showing my Boat in its Berth
+ - Member can see which Berth their boat is in, but can't see other Boats
+
+2.3 Rename a Club
+As Admin I want to rename a Club
+
+2.4 Add a Harbour
+As Admin I want to add a Harbour
+
+2.5 Rename a Harbour
+As Admin I want to rename a Harbour
+
+2.6 Remove a Harbour
+As Admin I want to rename a Harbour
+ - also removes Harbour's Jetties and their Berths
+ - should warn if harbour's jetties' berths have boats in them
+
+2.7 Add a Jetty
+As Admin I want to add a new Jetty
+
+2.8 Rename a Jetty
+As Admin I want to rename a Jetty
+
+2.9 Remove a Jetty
+As Admin I want to remove a Jetty
+ - also removes Jetty's Berths
+ - should warn if jetty's berths have boats in them
+
+2.10 Add a Berth
+As Admin I want to add a Berth
+
+2.11 Remove a Berth
+As Admin I want to remove a Berth
+ - should warn if berth has a boat in it
+
+2.12 Rename a Berth
+As Admin I want to rename a Berth
+
+2.13 Add access roles
+As Admin I want to add an access role (e.g. Harbourmaster) to a Member
+
+2.14 Remove access roles
+As Admin I want to remove an access role from a member
+ - can't remove Admin if no other member has Admin: must always be at least one Member with Admin access role
+
+3 Members
+
+3.1 List Members
+As Admin, Membership Secretary, Harbourmaster or Committee Member I want to list all Members
+
+3.2 View Member's details
+As Admin, Membership Secretary, Harbourmaster or Committee Member I want to see a Member's details
+
+3.3 View own details
+As Member I want to see my own details
+
+3.4 Add a Member
+As Membership Secretary I want to add a Member
+
+3.5 Change a Member
+As Membership Secretary I want to change a Member's details
+
+3.6 Remove a Member
+As Membership Secretary I want to remove a Member
+ - should also remove a member's Boat(s)
+
+3.7 Change own details
+As Member I want to change my own details
+ - only a limited set of those details
+
+4 Boats
+
+4.1 List Boats
+As Admin, Membership Secretary, Harbourmaster or Committee Member I want to list all Boats
+
+4.2 View Boat's details
+As Admin, Membership Secretary, Harbourmaster or Committee Member I want to see a Boat's details
+
+4.3 View own Boat's details
+As Member I want to view my own Boat's details
+
+4.4 Add a Boat
+As Membership Secretary I want to add a Boat
+
+4.5 Change a Boat
+As Membership Secretary I want to change a Boat's details
+
+4.6 Remove a Boat
+As Membership Secretary I want to remove a Boat
+
+4.7 Assign a Boat to a Berth
+As Harbourmaster I want to assign a Boat to a Berth
+
+4.8 Unassign a Boat from a Berth
+As Harbourmaster I want to unassign a Boat from a Berth
