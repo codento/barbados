@@ -1,5 +1,5 @@
 System.config({
-  baseURL: "/",
+  baseURL: "/static/",
   defaultJSExtensions: true,
   transpiler: "babel",
   babelOptions: {
@@ -8,15 +8,16 @@ System.config({
     ]
   },
   paths: {
-    "github:*": "./jspm_packages/github/*",
-    "npm:*": "./jspm_packages/npm/*",
-
-    "tableSort": "./lib/tableSortAnim.min"
+    "tableSort": "./lib/tableSortAnim.min",
+    "github:*": "jspm_packages/github/*",
+    "npm:*": "jspm_packages/npm/*"
   },
 
   meta: {
     "tableSort": {
-      deps: ['jquery']
+      "deps": [
+        "jquery"
+      ]
     }
   },
 
