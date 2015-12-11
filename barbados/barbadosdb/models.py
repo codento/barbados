@@ -234,6 +234,10 @@ class Berth(models.Model):
     class Meta:
         app_label = 'barbadosdb'
         unique_together = ('jetty', 'name')
+        permissions = (
+            ('assign_berth_boat', 'Can assign a berth to a boat'),
+            ('deny_berth_boat', 'Can deny a berth from a boat'),
+        )
 
     def __str__(self):
         return self.name
