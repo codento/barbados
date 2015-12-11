@@ -14,7 +14,11 @@ Postgresql 9.4 with UUID support. To enable, be sure to install
 
     CREATE EXTENSION "uuid-ossp";
 
-## Testing
+## Run server
+
+  DJANGO_SETTINGS_MODULE=barbados.dev_settings python manage.py runserver
+
+## Run tests
 
 Run the tests with
 
@@ -26,7 +30,8 @@ To create test data for admin etc
 
 ## Client development
 
-    barbados/barbadosweb/static/npm install
+    cd barbados/barbadosweb/static
+    npm install
 
 Start django server and open http://127.0.0.1:8000/static/index.html
 (can also be loaded straight from filesystem)
