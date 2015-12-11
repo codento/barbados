@@ -26,7 +26,7 @@ To create test data for admin etc
 
 ## Client development
 
-    npm install
+    barbados/barbadosweb/static/npm install
 
 Start django server and open http://127.0.0.1:8000/static/index.html
 (can also be loaded straight from filesystem)
