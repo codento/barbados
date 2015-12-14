@@ -14,3 +14,13 @@ Postgresql 9.4 with UUID support. To enable, be sure to install
 
     CREATE EXTENSION "uuid-ossp";
 
+## Testing
+
+Run the tests with
+
+    $ py.test --cov=barbados.barbadosdb --cov=barbados.barbadosweb --cov-report=term-missing
+
+To create test data for admin etc
+
+    $ DJANGO_SETTINGS_MODULE=barbados.dev_settings python manage.py create-test-users
+
