@@ -23,4 +23,5 @@ Run the tests with
 To create test data for admin etc
 
     $ DJANGO_SETTINGS_MODULE=barbados.dev_settings python manage.py create-test-users
+    $ DJANGO_SETTINGS_MODULE=barbados.dev_settings python manage.py create-test-club
 
