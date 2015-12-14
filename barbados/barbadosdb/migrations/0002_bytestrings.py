@@ -51,7 +51,7 @@ class Migration(migrations.Migration):
         migrations.AlterField(
             model_name='boat',
             name='registration_number',
-            field=barbados.barbadosdb.models.RegistrationNumberField(blank=True, default='', max_length=6),
+            field=barbados.barbadosdb.fields.RegistrationNumberField(blank=True, default='', max_length=6),
         ),
         migrations.AlterField(
             model_name='user',
