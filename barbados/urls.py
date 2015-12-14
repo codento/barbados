@@ -19,10 +19,41 @@ from django.conf.urls.static import static
 from django.conf.urls import url
 from django.conf import settings
 from django.contrib import admin
+from barbados.barbadosdb import models
+
+from rest_framework import routers, serializers, viewsets
+
+
+# Serializers define the API representation.
+class UserSerializer(serializers.HyperlinkedModelSerializer):
+    class Meta:
+        model = models.User
+        fields = (
+            'url', 'username', 'email',
+            'birth_date', 'phone_number',
+            'street_address', 'city', 'country_code'
+        )
+
+
+class ClubSerializer(serializers.HyperlinkedModelSerializer):
+    class Meta:
+        model = models.Club
+        fields = ('name')
+
+
+# ViewSets define the view behavior.
+class UserViewSet(viewsets.ModelViewSet):
+    queryset = models.User.objects.all()
+    serializer_class = UserSerializer
+
+# Routers provide an easy way of automatically determining the URL conf.
+router = routers.DefaultRouter()
+router.register(r'users', UserViewSet)
 
 
 urlpatterns = [
     url(r'^admin/', admin.site.urls),
     url(r'^admin_tools/', include('admin_tools.urls')),
+    url(r'^api-auth/', include('rest_framework.urls', namespace='rest_framework')),
 ] + static(settings.STATIC_URL)
 
