@@ -30,7 +30,7 @@ Options:
         users = {'harbourmaster': ('Harbourmaster',),
                  'secretary': ('Membership secretary',),
                  'admin': make_superuser,
-                 'user': lambda u: None}
+                 'user': None}
 
         with transaction.atomic(using=arguments['--database']):
             for username, todo in users.items():
