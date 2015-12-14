@@ -139,7 +139,7 @@ class Club(models.Model):
 
     name = models.CharField(max_length=64, db_index=True)
 
-    user = models.ManyToManyField(User, symmetrical=True, through=Membership)
+    users = models.ManyToManyField(User, symmetrical=True, through=Membership)
 
     class Meta:
         app_label = 'barbadosdb'
