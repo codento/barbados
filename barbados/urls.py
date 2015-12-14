@@ -192,3 +192,7 @@ urlpatterns = [
     url(r'^api-auth/', include('rest_framework.urls', namespace='rest_framework')),
 ] + static(settings.STATIC_URL)
 
+urlpatterns += [
+    url(r'^api/', include(router.urls, namespace='api')),
+]
+
