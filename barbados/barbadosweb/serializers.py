@@ -6,12 +6,16 @@ from barbados.barbadosdb import models
 class UserSerializer(serializers.HyperlinkedModelSerializer):
     url = serializers.HyperlinkedIdentityField(view_name='api:user-detail')
 
+    boats = serializers.HyperlinkedRelatedField(
+        queryset=models.Boat.objects.all(), view_name='api:boat-detail', many=True)
+
     class Meta:
         model = models.User
         fields = (
             'url', 'username', 'email',
             'birth_date', 'phone_number',
-            'street_address', 'city', 'country_code'
+            'street_address', 'city', 'country_code',
+            'boats'
         )
 
     def create(self, validated_data):
@@ -33,9 +37,12 @@ class BoatSerializer(serializers.HyperlinkedModelSerializer):
 
     user = serializers.HyperlinkedRelatedField(queryset=models.User.objects.all(), view_name='api:user-detail')
 
+    berth = serializers.HyperlinkedRelatedField(queryset=models.Berth.objects.all(), view_name='api:berth-detail')
+
     class Meta:
         model = models.Boat
-        fields = ('url', 'user', 'name', 'boat_type', 'model', 'manufacturer',
+        fields = ('url', 'user', 'name', 'berth',
+                  'boat_type', 'model', 'manufacturer',
                   'registration_number', 'sail_number', 'boat_certificate_number',
                   'length', 'beam', 'height', 'draught', 'weight',
                   'material', 'colour',
@@ -73,9 +80,12 @@ class BoatSerializer(serializers.HyperlinkedModelSerializer):
 class ClubSerializer(serializers.HyperlinkedModelSerializer):
     url = serializers.HyperlinkedIdentityField(view_name='api:club-detail')
 
+    harbours = serializers.HyperlinkedRelatedField(
+        queryset=models.Harbour.objects.all(), view_name='api:harbour-detail', many=True)
+
     class Meta:
         model = models.Club
-        fields = ('url', 'name')
+        fields = ('url', 'name', 'harbours')
 
     def create(self, validated_data):
         return models.Club.objects.create(**validated_data)
@@ -90,10 +100,12 @@ class HarbourSerializer(serializers.HyperlinkedModelSerializer):
     url = serializers.HyperlinkedIdentityField(view_name='api:harbour-detail')
 
     club = serializers.HyperlinkedRelatedField(queryset=models.Club.objects.all(), view_name='api:club-detail')
+    jetties = serializers.HyperlinkedRelatedField(
+        queryset=models.Jetty.objects.all(), view_name='api:jetty-detail', many=True)
 
     class Meta:
         model = models.Harbour
-        fields = ('url', 'name', 'club')
+        fields = ('url', 'name', 'club', 'jetties')
 
     def create(self, validated_data):
         return models.Harbour.objects.create(**validated_data)
@@ -109,10 +121,12 @@ class JettySerializer(serializers.HyperlinkedModelSerializer):
     url = serializers.HyperlinkedIdentityField(view_name='api:jetty-detail')
 
     harbour = serializers.HyperlinkedRelatedField(queryset=models.Harbour.objects.all(), view_name='api:harbour-detail')
+    berths = serializers.HyperlinkedRelatedField(
+        queryset=models.Berth.objects.all(), view_name='api:berth-detail', many=True)
 
     class Meta:
         model = models.Jetty
-        fields = ('url', 'name', 'harbour')
+        fields = ('url', 'name', 'harbour', 'berths')
 
     def create(self, validated_data):
         return models.Jetty.objects.create(**validated_data)
