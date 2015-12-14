@@ -2,26 +2,26 @@
 require './styles/root.coffee!'
 require 'tableSort'
 
-# main module requires (to be moved to own file)
-{ createNode } = require 'jsonHtml'
-{ tables, hierarchic } = require './dummyData.coffee!' #
+{ getTableData } = require './utils/api.coffee!'
+
+# { tables, hierarchic } = require './dummyData.coffee!' #
+
+{ state, initTables } = require './uiState.coffee!'
 
 { renderTable } = require './table/table.coffee!'
-
-
+{ trans } = require './utils/dict.coffee!'
+{ createNode } = require 'jsonHtml'
 $ = require 'jquery'
 
-document.body.appendChild createNode div: [
-  for tableName, tableVals of tables
-    Section: renderTable tableName, tableVals
 
-  # section:
-  #   h2: 'Relation hierarchy proto'
-  #   '.hierarchic': inspect_object hierarchic
-]
-#setTimeout ->
-$('.tableSorter').tableSort() # sortBy: key
-#, 1000
+renderUi = ->
+  document.body.appendChild createNode div: [
+    for [tableName, tableVals] in state.tables
+      Section: renderTable tableName, tableVals
+  ]
+  $('.tableSorter').tableSort() # sortBy: key
 
-require 'core-js'
-console.log(Object.isObject({}))
+rootTable = 'club'
+getTableData(rootTable).then (tableRows)->
+  initTables [ [trans(rootTable), tableRows] ]
+  renderUi()
