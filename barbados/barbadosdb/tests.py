@@ -1,3 +1,4 @@
+from django.contrib.auth import models as auth_models
 from . import models
 
 import pytest
@@ -228,4 +229,28 @@ def test_assign_boat_to_berth():
     berth.save()
     boat.refresh_from_db()
     assert boat.berth == berth
+
+
+@pytest.mark.django_db()
+def test_secretary_permissions():
+    u = UserFactory.create()
+    g = auth_models.Group.objects.get(name='Membership secretary')
+
+    u.groups.add(g)
+
+    assert u.has_perm('barbadosdb.add_boat')
+    assert u.has_perm('barbadosdb.add_user')
+    assert not u.has_perm('barbadosdb.assign_berth_boat')
+
+
+@pytest.mark.django_db()
+def test_user_berth_permission():
+    u = UserFactory.create()
+    group = auth_models.Group.objects.get(name='Harbourmaster')
+
+    u.groups.add(group)
+
+    assert u.has_perm('barbadosdb.assign_berth_boat')
+    assert not u.has_perm('barbadosdb.add_user')
+    assert not u.has_perm('barbadosdb.add_boat')
 
