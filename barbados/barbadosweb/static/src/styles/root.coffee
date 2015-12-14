@@ -1,5 +1,7 @@
 
 
+sectionWidth = 900
+
 { bgColor } = require 'src/styles/colors.coffee!'
 
 require('jsonCss').addStyles
@@ -15,7 +17,8 @@ require('jsonCss').addStyles
     color: '#444'
     section:
       width: sectionWidth
-      marginTop: 20
+      margin: "20px calc((100vw - #{sectionWidth}px) / 2)"
+      #marginTop: 20
 
       #'td:nth-child(4)': textAlign: 'right'
     '.hierarchic':
