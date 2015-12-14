@@ -57,7 +57,7 @@ class Boat(models.Model):
 
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
 
-    user = models.ForeignKey(User)
+    user = models.ForeignKey(User, related_name='boats')
 
     name = models.CharField(max_length=64, blank=True, default='', db_index=True)
 
@@ -140,7 +140,7 @@ class Harbour(models.Model):
 
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
 
-    club = models.ForeignKey(Club)
+    club = models.ForeignKey(Club, related_name='harbours')
 
     name = models.CharField(max_length=64, db_index=True)
 
@@ -157,7 +157,7 @@ class Jetty(models.Model):
 
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
 
-    harbour = models.ForeignKey(Harbour)
+    harbour = models.ForeignKey(Harbour, related_name='jetties')
 
     name = models.CharField(max_length=2, db_index=True)
 
@@ -176,7 +176,7 @@ class Berth(models.Model):
 
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
 
-    jetty = models.ForeignKey(Jetty)
+    jetty = models.ForeignKey(Jetty, related_name='berths')
 
     boat = models.OneToOneField(Boat, null=True, blank=True, default=None)
 
