@@ -34,11 +34,115 @@ class UserSerializer(serializers.HyperlinkedModelSerializer):
             'street_address', 'city', 'country_code'
         )
 
+    def create(self, validated_data):
+        return models.User.objects.create(**validated_data)
+
+    def update(self, instance, validated_data):
+        instance.email = validated_data.get('email', instance.email)
+        instance.birth_date = validated_data.get('birth_date', instance.birth_date)
+        instance.phone_number = validated_data.get('phone_number', instance.phone_number)
+        instance.street_address = validated_data.get('street_address', instance.street_address)
+        instance.city = validated_data.get('city', instance.city)
+        instance.country_code = validated_data.get('country_code', instance.country_code)
+        instance.save()
+        return instance
+
+
+class BoatSerializer(serializers.HyperlinkedModelSerializer):
+    class Meta:
+        model = models.Boat
+        fields = ('url', 'name', 'boat_type', 'model', 'manufacturer',
+                  'registration_number', 'sail_number', 'boat_certificate_number',
+                  'length', 'beam', 'height', 'draught', 'weight',
+                  'material', 'colour',
+                  'inspection_class', 'inspection_year', 'hull_inspection_year',
+                  'insurance_company')
+
+    def create(self, validated_data):
+        return models.Boat.objects.create(**validated_data)
+
+    def update(self, instance, validated_data):
+        instance.name = validated_data.get('name', instance.name)
+        instance.boat_type = validated_data.get('boat_type', instance.boat_type)
+        instance.model = validated_data.get('model', instance.model)
+        instance.manufacturer = validated_data.get('manufacturer', instance.manufacturer)
+        instance.registration_number = validated_data.get('registration_number', instance.registration_number)
+        instance.sail_number = validated_data.get('sail_number', instance.sail_number)
+        instance.boat_certificate_number = validated_data.get(
+            'boat_certificate_number', instance.boat_certificate_number)
+        instance.length = validated_data.get('length', instance.length)
+        instance.beam = validated_data.get('beam', instance.beam)
+        instance.height = validated_data.get('height', instance.height)
+        instance.draught = validated_data.get('draught', instance.draught)
+        instance.weight = validated_data.get('weight', instance.weight)
+        instance.material = validated_data.get('material', instance.material)
+        instance.colour = validated_data.get('colour', instance.colour)
+        instance.inspection_class = validated_data.get('inspection_class', instance.inspection_class)
+        instance.inspection_year = validated_data.get('inspection_year', instance.inspection_year)
+        instance.hull_inspection_year = validated_data.get('hull_inspection_year', instance.hull_inspection_year)
+        instance.insurance_company = validated_data.get('insurance_company', instance.insurance_company)
+        instance.save()
+        return instance
+
 
 class ClubSerializer(serializers.HyperlinkedModelSerializer):
     class Meta:
         model = models.Club
-        fields = ('name')
+        fields = ('url', 'name')
+
+    def create(self, validated_data):
+        return models.Club.objects.create(**validated_data)
+
+    def update(self, instance, validated_data):
+        instance.name = validated_data.get('name', instance.name)
+        instance.save()
+        return instance
+
+
+class HarbourSerializer(serializers.HyperlinkedModelSerializer):
+    class Meta:
+        model = models.Harbour
+        fields = ('url', 'name', 'club')
+
+    def create(self, validated_data):
+        return models.Harbour.objects.create(**validated_data)
+
+    def update(self, instance, validated_data):
+        instance.name = validated_data.get('name', instance.name)
+        instance.club = validated_data.get('club', instance.club)
+        instance.save()
+        return instance
+
+
+class JettySerializer(serializers.HyperlinkedModelSerializer):
+    class Meta:
+        model = models.Jetty
+        fields = ('url', 'name', 'harbour')
+
+    def create(self, validated_data):
+        return models.Jetty.objects.create(**validated_data)
+
+    def update(self, instance, validated_data):
+        instance.name = validated_data.get('name', instance.name)
+        instance.harbour = validated_data.get('harbour', instance.harbour)
+        instance.save()
+        return instance
+
+
+class BerthSerializer(serializers.HyperlinkedModelSerializer):
+    class Meta:
+        model = models.Berth
+        fields = ('url', 'name', 'jetty')
+
+    def create(self, validated_data):
+        return models.Berth.objects.create(**validated_data)
+
+    def update(self, instance, validated_data):
+        instance.name = validated_data.get('name', instance.name)
+        instance.jetty = validated_data.get('jetty', instance.jetty)
+        instance.boat = validated_data.get('boat', instance.boat)
+        instance.save()
+        return instance
 
 
 # ViewSets define the view behavior.
@@ -46,9 +150,40 @@ class UserViewSet(viewsets.ModelViewSet):
     queryset = models.User.objects.all()
     serializer_class = UserSerializer
 
+
+class BoatViewSet(viewsets.ModelViewSet):
+    queryset = models.Boat.objects.all()
+    serializer_class = BoatSerializer
+
+
+class ClubViewSet(viewsets.ModelViewSet):
+    queryset = models.Club.objects.all()
+    serializer_class = ClubSerializer
+
+
+class HarbourViewSet(viewsets.ModelViewSet):
+    queryset = models.Harbour.objects.all()
+    serializer_class = HarbourSerializer
+
+
+class JettyViewSet(viewsets.ModelViewSet):
+    queryset = models.Jetty.objects.all()
+    serializer_class = JettySerializer
+
+
+class BerthViewSet(viewsets.ModelViewSet):
+    queryset = models.Berth.objects.all()
+    serializer_class = BerthSerializer
+
+
 # Routers provide an easy way of automatically determining the URL conf.
 router = routers.DefaultRouter()
 router.register(r'users', UserViewSet)
+router.register(r'boats', BoatViewSet)
+router.register(r'clubs', ClubViewSet)
+router.register(r'harbours', HarbourViewSet)
+router.register(r'jetties', JettyViewSet)
+router.register(r'berths', BerthViewSet)
 
 
 urlpatterns = [
