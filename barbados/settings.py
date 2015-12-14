@@ -49,6 +49,7 @@ INSTALLED_APPS = (
     'debug_toolbar',
     'rest_framework',
     'barbados.barbadosdb',
+    'barbados.barbadosweb',
 )
 
 
@@ -145,7 +146,6 @@ USE_TZ = True
 
 STATIC_URL = '/static/'
 
-
 # Codento-specifics
 
 # ADMIN_TOOLS_INDEX_DASHBOARD = 'barbados.dashboard.CustomIndexDashboard'
@@ -178,7 +178,6 @@ LOGGING = {
         },
     },
 }
-
 # Django REST Framework
 
 REST_FRAMEWORK = {
@@ -188,4 +187,3 @@ REST_FRAMEWORK = {
         'rest_framework.permissions.DjangoModelPermissionsOrAnonReadOnly'
     ]
 }
-

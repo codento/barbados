@@ -1,0 +1,21 @@
+{
+  "jspm": {
+    "dependencies": {
+      "coffee": "github:forresto/system-coffee@^0.1.2",
+      "jquery": "github:components/jquery@^2.1.4",
+      "jsonCss": "github:jussiry/jsonCss@^0.1.0",
+      "jsonHtml": "github:jussiry/jsonHtml@^0.2.0"
+    },
+    "devDependencies": {
+      "babel": "npm:babel-core@^5.1.13",
+      "babel-runtime": "npm:babel-runtime@^5.1.13",
+      "core-js": "npm:core-js@^0.9.4"
+    }
+  },
+  "devDependencies": {
+    "jspm": "^0.16.15"
+  },
+  "scripts": {
+    "install": "./node_modules/.bin/jspm install"
+  }
+}
