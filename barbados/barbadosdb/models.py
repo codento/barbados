@@ -119,6 +119,18 @@ class Boat(models.Model):
         return self.name
 
 
+class Membership(models.Model):
+    """Membership (not the sailable) in club
+    """
+
+    user = models.ForeignKey(User)
+    club = models.ForeignKey('Club')
+
+    # This would be dependent on having paid the membership fee etc
+    # It would also be default=False, I guess, but keep it easy for us
+    is_valid = models.BooleanField(default=True)
+
+
 class Club(models.Model):
     """Members of Harbours, with extra data
     """
@@ -126,6 +138,8 @@ class Club(models.Model):
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
 
     name = models.CharField(max_length=64, db_index=True)
+
+    user = models.ManyToManyField(User, symmetrical=True, through=Membership)
 
     class Meta:
         app_label = 'barbadosdb'
