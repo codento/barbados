@@ -1,12 +1,5 @@
 
 
-<<<<<<< HEAD
-{ addStyles } = require 'jsonCss'
-sectionWidth = 900
-=======
-sectionWidht = 800
->>>>>>> c0eb1d5... Codento styling and buttons for remove and add
-
 { bgColor } = require 'src/styles/colors.coffee!'
 
 require('jsonCss').addStyles
