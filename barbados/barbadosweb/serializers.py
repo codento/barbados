@@ -7,7 +7,7 @@ class UserSerializer(serializers.HyperlinkedModelSerializer):
     url = serializers.HyperlinkedIdentityField(view_name='api:user-detail')
 
     boats = serializers.HyperlinkedRelatedField(
-        queryset=models.Boat.objects.all(), view_name='api:boat-detail', many=True)
+        read_only=True, view_name='api:boat-detail', many=True)
 
     class Meta:
         model = models.User
@@ -37,7 +37,7 @@ class BoatSerializer(serializers.HyperlinkedModelSerializer):
 
     user = serializers.HyperlinkedRelatedField(queryset=models.User.objects.all(), view_name='api:user-detail')
 
-    berth = serializers.HyperlinkedRelatedField(queryset=models.Berth.objects.all(), view_name='api:berth-detail')
+    berth = serializers.HyperlinkedRelatedField(read_only=True, view_name='api:berth-detail')
 
     class Meta:
         model = models.Boat
@@ -81,7 +81,7 @@ class ClubSerializer(serializers.HyperlinkedModelSerializer):
     url = serializers.HyperlinkedIdentityField(view_name='api:club-detail')
 
     harbours = serializers.HyperlinkedRelatedField(
-        queryset=models.Harbour.objects.all(), view_name='api:harbour-detail', many=True)
+        read_only=True, view_name='api:harbour-detail', many=True)
 
     class Meta:
         model = models.Club
@@ -101,7 +101,7 @@ class HarbourSerializer(serializers.HyperlinkedModelSerializer):
 
     club = serializers.HyperlinkedRelatedField(queryset=models.Club.objects.all(), view_name='api:club-detail')
     jetties = serializers.HyperlinkedRelatedField(
-        queryset=models.Jetty.objects.all(), view_name='api:jetty-detail', many=True)
+        read_only=True, view_name='api:jetty-detail', many=True)
 
     class Meta:
         model = models.Harbour
@@ -122,7 +122,7 @@ class JettySerializer(serializers.HyperlinkedModelSerializer):
 
     harbour = serializers.HyperlinkedRelatedField(queryset=models.Harbour.objects.all(), view_name='api:harbour-detail')
     berths = serializers.HyperlinkedRelatedField(
-        queryset=models.Berth.objects.all(), view_name='api:berth-detail', many=True)
+        read_only=True, view_name='api:berth-detail', many=True)
 
     class Meta:
         model = models.Jetty
