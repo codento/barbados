@@ -104,3 +104,19 @@ As Harbourmaster I want to assign a Boat to a Berth
 
 4.8 Unassign a Boat from a Berth
 As Harbourmaster I want to unassign a Boat from a Berth
+
+5 Queries
+
+5.1 Member E-mails
+As Membership Secretary I want to get a list of the e-mail addresses of all members.
+
+5.2 Boat owner E-mails
+As Membership Secretary I want to get a list of the e-mail addresses of all members with boats.
+ - No duplicates where members have two boats
+
+5.3 Berth User E-mails
+As Harbourmaster I want to get a list of the e-mail addresses of all members who have a Berth.
+ - No duplicates where members have two boats
+
+5.4 Berth Usage Statistics
+As Harbourmaster I want to find out how many of the Club's Berths are empty.
