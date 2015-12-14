@@ -197,12 +197,12 @@ class BerthViewSet(viewsets.ModelViewSet):
 
 # Routers provide an easy way of automatically determining the URL conf.
 router = routers.DefaultRouter()
-router.register(r'users', UserViewSet)
-router.register(r'boats', BoatViewSet)
-router.register(r'clubs', ClubViewSet)
-router.register(r'harbours', HarbourViewSet)
-router.register(r'jetties', JettyViewSet)
-router.register(r'berths', BerthViewSet)
+router.register(r'user', UserViewSet)
+router.register(r'boat', BoatViewSet)
+router.register(r'club', ClubViewSet)
+router.register(r'harbour', HarbourViewSet)
+router.register(r'jetty', JettyViewSet)
+router.register(r'berth', BerthViewSet)
 
 
 urlpatterns = [
