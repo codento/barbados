@@ -1,7 +1,7 @@
 
 
 { addStyles } = require 'jsonCss'
-sectionWidht = 900
+sectionWidth = 900
 
 addStyles
   '*':
@@ -15,7 +15,7 @@ addStyles
     color: '#444'
 
     section:
-      width: sectionWidht
+      width: sectionWidth
       marginTop: 20
     '.tableWrapper':
       background: 'white'
