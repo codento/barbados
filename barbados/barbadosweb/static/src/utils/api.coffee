@@ -25,12 +25,18 @@ getItem = (type, id)-> $.get (getPath(type) + '/' + id) #, 'json'
 # @getList('club').then (res)->
 #   console.log(res)
 
+# delete values that are not to be show in UI
+sanitizeKeys = ['url', 'club', 'harbour']
+@sanitizeItem = sanitizeItem = (item)->
+  for key in sanitizeKeys
+    delete item[key] if item[key]?
+  return
 
 @getTableData = (type)->
   new Promise (resolve, reject)->
     getList(type).then((itemList)->
       for item in itemList
-        delete item.url
-      console.log 'edited item list', itemList
+        sanitizeItem item
+      #console.log 'edited item list', itemList
       resolve(itemList);
     )

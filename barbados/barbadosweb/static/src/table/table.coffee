@@ -4,24 +4,27 @@
 
 { addButton } = require './addRow.coffee!'
 { headerHtml, delHtml } = require './delRow.coffee!'
-{ editCell, valueCell } = require './editCell.coffee!'
+{ editCell, valueCell } = require './cell.coffee!'
 
-@renderTable = (name, vals)->
-  h2: titelize name
-  #'.tableWrapper':
-  'table.tableSorter':
-    'Thead':
-      tr:
-        (for key of vals[0]
-          th:
-            text: titelize key
-        ).concat headerHtml
-    'Tbody': for row in vals
-      tr:
-        (for key, val of row
-          td: valueCell(val)
-        ).concat delHtml
-  me: addButton
+@renderTable = (name, rows)->
+  Section:
+    h2: titelize name
+    #'.tableWrapper':
+    'table.tableSorter':
+      'Thead':
+        tr:
+          (for key of rows[0]
+            th:
+              text: titelize key
+          ).concat headerHtml
+      'Tbody':
+        for row in rows
+          tr:
+            (for key of row
+              console.log key
+              td: valueCell(key, row)
+            ).concat delHtml
+    me: addButton
 
 
 { bgColor, codentoColor } = require 'src/styles/colors.coffee!'

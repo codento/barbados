@@ -15,9 +15,9 @@ $ = require 'jquery'
 
 
 renderUi = ->
-  document.body.appendChild createNode div: [
+  document.body.appendChild createNode [
     for [tableName, tableVals] in state.tables
-      Section: renderTable tableName, tableVals
+      renderTable tableName, tableVals
   ]
   $('.tableSorter').tableSort() # sortBy: key
 
