@@ -1,13 +1,9 @@
 from django.contrib.auth import models as auth_models
 from django.utils.translation import ugettext_lazy as _
 from django.db import models
-
-from . import fields
-
+from django.core.validators import RegexValidator, MaxValueValidator, MinValueValidator
+from datetime import date
 import uuid
-
-
-# Create your models here.
 
 
 class User(auth_models.AbstractUser):
@@ -19,7 +15,8 @@ class User(auth_models.AbstractUser):
 
     birth_date = models.DateField(null=True, blank=True, default=None)
 
-    phone_number = fields.PhoneNumberField(max_length=24, blank=True, default='')
+    phone_number = models.CharField(max_length=24, blank=True, default='',
+        validators=[RegexValidator(regex='^\+[0-9/ .()]+$', message=_('Use international format with phone numbers'))])
 
     # Make this pretty free-form for compatibility with different countries
     street_address = models.TextField(null=True, blank=True, default=None)
@@ -72,8 +69,9 @@ class Boat(models.Model):
 
     manufacturer = models.CharField(max_length=64, blank=True, default='')
 
-    registration_number = fields.RegistrationNumberField(
-        max_length=6, blank=True, default='')
+    registration_number = models.CharField(max_length=6, blank=True, default='',
+        validators=[RegexValidator(regex='[A-Z][0-9]{1,5}',
+                                   message=_('Registration number must be blank or of form A12345'))])
 
     sail_number = models.IntegerField(null=True, blank=True, default=None)
 
@@ -105,10 +103,11 @@ class Boat(models.Model):
         default=None
     )
 
-    inspection_year = fields.InspectionYearField(null=True, blank=True, default=None)
+    inspection_year = models.IntegerField(null=True, blank=True, default=None,
+        validators=[MinValueValidator(1900), MaxValueValidator(date.today().year)])
 
-    hull_inspection_year = fields.InspectionYearField(
-        null=True, blank=True, default=None)
+    hull_inspection_year = models.IntegerField(null=True, blank=True, default=None,
+        validators=[MinValueValidator(1900), MaxValueValidator(date.today().year)])
 
     insurance_company = models.CharField(max_length=64, blank=True, default='')
 

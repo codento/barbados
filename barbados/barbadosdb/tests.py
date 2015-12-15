@@ -1,5 +1,6 @@
 from django.contrib.auth import models as auth_models
-from . import fields, models
+from django.core.exceptions import ValidationError
+from . import models
 
 import pytest
 import factory
@@ -80,7 +81,7 @@ def test_bad_phone_number():
         u.full_clean()
 
         pytest.fail(msg='User should not be valid')
-    except fields.ValidationError:
+    except ValidationError:
         pass
 
 
@@ -140,7 +141,7 @@ def test_bad_boat_type():
         b.full_clean()
 
         pytest.fail(msg='Boat should not be valid')
-    except fields.ValidationError:
+    except ValidationError:
         pass
 
 
@@ -151,7 +152,7 @@ def test_bad_registration_number():
         b.full_clean()
 
         pytest.fail(msg='Boat should not be valid')
-    except fields.ValidationError:
+    except ValidationError:
         pass
 
 
@@ -162,7 +163,7 @@ def test_bad_material():
         b.full_clean()
 
         pytest.fail(msg='Boat should not be valid')
-    except fields.ValidationError:
+    except ValidationError:
         pass
 
 
@@ -173,7 +174,7 @@ def test_bad_inspection_class():
         b.full_clean()
 
         pytest.fail(msg='Boat should not be valid')
-    except fields.ValidationError:
+    except ValidationError:
         pass
 
 
@@ -184,7 +185,7 @@ def test_bad_inspection_year_too_short():
         b.full_clean()
 
         pytest.fail(msg='Boat should not be valid')
-    except fields.ValidationError:
+    except ValidationError:
         pass
 
 
@@ -195,7 +196,7 @@ def test_bad_inspection_year_in_future():
         b.full_clean()
 
         pytest.fail(msg='Boat should not be valid')
-    except fields.ValidationError:
+    except ValidationError:
         pass
 
 
@@ -206,7 +207,7 @@ def test_bad_hull_inspection_year_too_short():
         b.full_clean()
 
         pytest.fail(msg='Boat should not be valid')
-    except fields.ValidationError:
+    except ValidationError:
         pass
 
 
@@ -217,7 +218,7 @@ def test_bad_hull_inspection_year_in_future():
         b.full_clean()
 
         pytest.fail(msg='Boat should not be valid')
-    except fields.ValidationError:
+    except ValidationError:
         pass
 
 
