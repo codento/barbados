@@ -3,6 +3,7 @@
 from __future__ import unicode_literals
 
 import barbados.barbadosdb.models
+import barbados.barbadosdb.fields
 from django.db import migrations, models
 
 

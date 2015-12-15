@@ -3,6 +3,7 @@
 from __future__ import unicode_literals
 
 import barbados.barbadosdb.models
+import barbados.barbadosdb.fields
 from django.conf import settings
 import django.contrib.auth.models
 import django.core.validators
