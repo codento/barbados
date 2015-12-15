@@ -18,8 +18,8 @@ getPath = (type)->
   throw Error "Invalid list type: #{type}" unless url
   url
 
-@getList = getList = (type)-> $.get getPath(type), 'json'
-getItem = (type, id)-> $.get (getPath(type) + '/' + id), 'json'
+@getList = getList = (type)-> $.get getPath(type) #, 'json'
+getItem = (type, id)-> $.get (getPath(type) + '/' + id) #, 'json'
 
 
 # @getList('club').then (res)->

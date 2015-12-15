@@ -16,9 +16,12 @@
 @valueCell = valueCell = (value)->
   '.wrapper':
     if Array.isArray(value)
-      onClick: ->
-        console.log value
-      span: trans('open') + ' ' + value.length
+      if value.length
+        onClick: ->
+          console.log value
+        span: trans('open') + ' ' + value.length
+      else
+        null
     else
       onClick: (ev)->
         wrapper = ev.currentTarget
