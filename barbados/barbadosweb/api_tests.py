@@ -142,6 +142,21 @@ def test_create_boat(admin_user, ordinary_user):
     assert content['name'] == 'Titanic'
 
 
+@pytest.mark.django_db()
+def test_modify_boat(admin_user, boat):
+    client = APIClient()
+    assert client.login(username=admin_user.username, password='password')
+    response = client.patch('/api/boat/' + str(boat.id) + '/', {
+        'name': 'Olympic'
+    })
+    assert response.status_code == 200
+    content = json.loads(response.content.decode('utf-8'))
+    assert isinstance(content, dict)
+    assert content['name'] == 'Olympic'
+    boat.refresh_from_db()
+    assert boat.name == 'Olympic'
+
+
 # Club tests
 
 @pytest.mark.django_db()
