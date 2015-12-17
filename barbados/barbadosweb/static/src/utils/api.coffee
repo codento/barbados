@@ -13,30 +13,33 @@ paths =
   "boat": "/api/boat/",
   "user": "/api/user/",
 
-getPath = (type)->
+pathFromType = (type)->
   url = paths[type]
   throw Error "Invalid list type: #{type}" unless url
   url
 
-@getList = getList = (type)-> $.get getPath(type) #, 'json'
-getItem = (type, id)-> $.get (getPath(type) + '/' + id) #, 'json'
+@fetchList = fetchList = (type, filterKey, filterVal)->
+  url = pathFromType(type)
+  url += "?#{filterKey}=#{filterVal}" if filterKey
+  $.get url
 
-
-# @getList('club').then (res)->
-#   console.log(res)
+@fetchItem = (type, id)->
+  $.get (pathFromType(type) + '/' + id) #, 'json'
 
 # delete values that are not to be show in UI
-sanitizeKeys = ['url', 'club', 'harbour']
-@sanitizeItem = sanitizeItem = (item)->
-  for key in sanitizeKeys
-    delete item[key] if item[key]?
-  return
+# sanitizeKeys = ['url', 'club', 'harbour']
+# @sanitizeItem = sanitizeItem = (item)->
+#   for key in sanitizeKeys
+#     delete item[key] if item[key]?
+#   return
 
-@getTableData = (type)->
-  new Promise (resolve, reject)->
-    getList(type).then((itemList)->
-      for item in itemList
-        sanitizeItem item
-      #console.log 'edited item list', itemList
-      resolve(itemList);
-    )
+@getTableDataPromise = (type, filterKey, filterVal)->
+  #debugger
+  fetchList(type, filterKey, filterVal);
+  # new Promise (resolve, reject)->
+  #   fetchList(type,filterKey,filterVal).then((itemList)->
+  #     for item in itemList
+  #       sanitizeItem item
+  #     console.log 'fetched list', itemList
+  #     resolve(itemList);
+  #   )

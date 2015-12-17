@@ -1,28 +1,33 @@
 
 
-{ titelize } = require 'src/utils/string.coffee!'
 
 { addButton } = require './addRow.coffee!'
 { headerHtml, delHtml } = require './delRow.coffee!'
 { editCell, valueCell } = require './cell.coffee!'
 
-@renderTable = (name, rows)->
+{ titelize, pick } = require './../utils/misc.coffee!'
+
+require './test.coffee!'
+
+dontShowKeys = ['url', 'club', 'harbour', 'jetty', 'boat']
+
+@renderTable = (name, rows, tableType)->
+  rowThatDefinesShownColumns = omit rows[0], dontShowKeys
   Section:
-    h2: titelize name
+    h2: name
     #'.tableWrapper':
     'table.tableSorter':
       'Thead':
         tr:
-          (for key of rows[0]
+          (for key of rowThatDefinesShownColumns
             th:
               text: titelize key
           ).concat headerHtml
       'Tbody':
         for row in rows
           tr:
-            (for key of row
-              console.log key
-              td: valueCell(key, row)
+            (for key of rowThatDefinesShownColumns
+              td: valueCell(key, row, tableType)
             ).concat delHtml
     me: addButton
 

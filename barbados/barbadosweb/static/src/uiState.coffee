@@ -1,9 +1,16 @@
 
-@state = state = {
+state = {
   tables: []
 }
 
-@initTables = (tables)->
-  unless tables.length is 0 or (Array.isArray(tables[0]) and tables[0].length is 2)
-    throw Error "Invalid tables"
-  state.tables = tables
+@addTable = (ind, name, type, filterKey, filterVal)->
+  unless typeof ind is 'number' and name and type
+    throw Error "Invalid table"
+  # drop all tables afte this index
+  state.tables.length = ind
+  state.tables[ind] = { name, type, filterKey, filterVal }
+
+# for debugging!
+window.state = state
+window.renderUI = @renderUI
+# /for debugging

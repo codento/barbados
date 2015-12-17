@@ -16,3 +16,18 @@ dict =
 dict.en = {}
 for key of dict.fi
   dict.en[key] = key
+
+# PLURAL <-> SINGULAR
+
+singularMap =
+  jetties: 'jetty'
+
+@singular = (plural)->
+  singularMap[plural] ? plural.slice 0, -1
+
+pluralMap = {}
+for key, val of singularMap
+  pluralMap[val] = key
+
+@plural = (singular)->
+  pluralMap[singular] ? singular + 's'

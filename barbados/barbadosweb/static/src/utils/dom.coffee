@@ -9,7 +9,9 @@
   else console.info "failed to replace node", newEl, oldEl
   newEl # don't work when newEl was object, since documentFragment will be empty
 
-
+@removeChildren = (node)->
+  while node.firstChild
+    node.removeChild node.firstChild
 
 # NOT USED currently:
 
@@ -32,10 +34,6 @@
   if (parentEl=element?.parentElement)?
   then parentEl.removeChild element
   else console.info "failed to remove node", element
-
-@removeChildren = (node)->
-  while node.firstChild
-    node.removeChild node.firstChild
 
 @replaceChildren = (node, newContent)->
   @removeChildren node
