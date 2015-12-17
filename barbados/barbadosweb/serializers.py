@@ -142,7 +142,7 @@ class BerthSerializer(serializers.HyperlinkedModelSerializer):
     url = serializers.HyperlinkedIdentityField(view_name='api:berth-detail')
 
     boat = serializers.HyperlinkedRelatedField(
-        queryset=models.Boat.objects.all(), view_name='api:boat-detail', allow_null=True)
+        queryset=models.Boat.objects.all(), view_name='api:boat-detail', allow_null=True, required=False)
     jetty = serializers.HyperlinkedRelatedField(queryset=models.Jetty.objects.all(), view_name='api:jetty-detail')
 
     class Meta:
