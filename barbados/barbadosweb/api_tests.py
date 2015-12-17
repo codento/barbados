@@ -80,14 +80,6 @@ def get_id(url):
     return re.findall('\/([0-9a-f\-]+)\/$', url)[0]
 
 
-def blank_nones(content):
-    result = content.copy()
-    for key in result.keys():
-        if result[key] is None:
-            result[key] = ''
-    return result
-
-
 # User tests
 
 @pytest.mark.django_db()
@@ -170,10 +162,10 @@ def test_modify_boat_put(admin_user, boat):
     assert client.login(username=admin_user.username, password='password')
 
     response = client.get('/api/boat/' + str(boat.id) + '/')
-    boat_content = blank_nones(json.loads(response.content.decode('utf-8')))
+    boat_content = json.loads(response.content.decode('utf-8'))
 
     boat_content['name'] = 'Olympic'
-    response = client.put('/api/boat/' + str(boat.id) + '/', boat_content)
+    response = client.put('/api/boat/' + str(boat.id) + '/', boat_content, format='json')
     assert response.status_code == 200
     content = json.loads(response.content.decode('utf-8'))
     assert isinstance(content, dict)
@@ -190,7 +182,7 @@ def test_modify_boat_patch(admin_user, boat):
 
     response = client.patch('/api/boat/' + str(boat.id) + '/', {
         'name': 'Olympic'
-    })
+    }, format='json')
     assert response.status_code == 200
     content = json.loads(response.content.decode('utf-8'))
     assert isinstance(content, dict)
@@ -263,10 +255,10 @@ def test_modify_club_put(admin_user, club):
     assert client.login(username=admin_user.username, password='password')
 
     response = client.get('/api/club/' + str(club.id) + '/')
-    club_content = blank_nones(json.loads(response.content.decode('utf-8')))
+    club_content = json.loads(response.content.decode('utf-8'))
 
     club_content['name'] = 'Other Yacht Club'
-    response = client.put('/api/club/' + str(club.id) + '/', club_content)
+    response = client.put('/api/club/' + str(club.id) + '/', club_content, format='json')
     assert response.status_code == 200
     content = json.loads(response.content.decode('utf-8'))
     assert isinstance(content, dict)
@@ -283,7 +275,7 @@ def test_modify_club_patch(admin_user, club):
 
     response = client.patch('/api/club/' + str(club.id) + '/', {
         'name': 'Other Yacht Club'
-    })
+    }, format='json')
     assert response.status_code == 200
     content = json.loads(response.content.decode('utf-8'))
     assert isinstance(content, dict)
@@ -360,10 +352,10 @@ def test_modify_harbour_put(admin_user, harbour):
     assert client.login(username=admin_user.username, password='password')
 
     response = client.get('/api/harbour/' + str(harbour.id) + '/')
-    harbour_content = blank_nones(json.loads(response.content.decode('utf-8')))
+    harbour_content = json.loads(response.content.decode('utf-8'))
 
     harbour_content['name'] = 'Other Harbour'
-    response = client.put('/api/harbour/' + str(harbour.id) + '/', harbour_content)
+    response = client.put('/api/harbour/' + str(harbour.id) + '/', harbour_content, format='json')
     assert response.status_code == 200
     content = json.loads(response.content.decode('utf-8'))
     assert isinstance(content, dict)
@@ -380,7 +372,7 @@ def test_modify_harbour_patch(admin_user, harbour):
 
     response = client.patch('/api/harbour/' + str(harbour.id) + '/', {
         'name': 'Other Harbour'
-    })
+    }, format='json')
     assert response.status_code == 200
     content = json.loads(response.content.decode('utf-8'))
     assert isinstance(content, dict)
@@ -458,10 +450,10 @@ def test_modify_jetty_put(admin_user, jetty):
     assert client.login(username=admin_user.username, password='password')
 
     response = client.get('/api/jetty/' + str(jetty.id) + '/')
-    jetty_content = blank_nones(json.loads(response.content.decode('utf-8')))
+    jetty_content = json.loads(response.content.decode('utf-8'))
 
     jetty_content['name'] = 'ZZ'
-    response = client.put('/api/jetty/' + str(jetty.id) + '/', jetty_content)
+    response = client.put('/api/jetty/' + str(jetty.id) + '/', jetty_content, format='json')
     assert response.status_code == 200
     content = json.loads(response.content.decode('utf-8'))
     assert isinstance(content, dict)
@@ -478,7 +470,7 @@ def test_modify_jetty_patch(admin_user, jetty):
 
     response = client.patch('/api/jetty/' + str(jetty.id) + '/', {
         'name': 'ZZ'
-    })
+    }, format='json')
     assert response.status_code == 200
     content = json.loads(response.content.decode('utf-8'))
     assert isinstance(content, dict)
@@ -555,10 +547,10 @@ def test_modify_berth_put(admin_user, berth):
     assert client.login(username=admin_user.username, password='password')
 
     response = client.get('/api/berth/' + str(berth.id) + '/')
-    berth_content = blank_nones(json.loads(response.content.decode('utf-8')))
+    berth_content = json.loads(response.content.decode('utf-8'))
 
     berth_content['name'] = 'test'
-    response = client.patch('/api/berth/' + str(berth.id) + '/', berth_content)
+    response = client.patch('/api/berth/' + str(berth.id) + '/', berth_content, format='json')
     assert response.status_code == 200
     content = json.loads(response.content.decode('utf-8'))
     assert isinstance(content, dict)
@@ -575,7 +567,7 @@ def test_modify_berth_patch(admin_user, berth):
 
     response = client.patch('/api/berth/' + str(berth.id) + '/', {
         'name': 'test'
-    })
+    }, format='json')
     assert response.status_code == 200
     content = json.loads(response.content.decode('utf-8'))
     assert isinstance(content, dict)
@@ -606,7 +598,7 @@ def test_assign_berth_to_boat(admin_user, berth, boat):
 
     response = client.patch('/api/berth/' + str(berth.id) + '/', {
         'boat': boat_url
-    })
+    }, format='json')
     assert response.status_code == 200
     content = json.loads(response.content.decode('utf-8'))
     assert isinstance(content, dict)
@@ -625,8 +617,8 @@ def test_deny_berth_to_boat(admin_user, berth, boat):
     assert client.login(username=admin_user.username, password='password')
 
     response = client.patch('/api/berth/' + str(berth.id) + '/', {
-        'boat': ''
-    })
+        'boat': None
+    }, format='json')
     print(response.content.decode('utf-8'))
     assert response.status_code == 200
     content = json.loads(response.content.decode('utf-8'))
