@@ -14,7 +14,12 @@ class ModelPermissions(DjangoModelPermissions):
         'DELETE': ['%(app_label)s.delete_%(model_name)s'],
     }
 
-    def _changes_permitted_fields(user, request):
+    _PERMITTED_FIELDS = ['phone_number', 'street_address', 'city', 'country_code']
+
+    def _changes_permitted_user_fields(self, request, obj):
+        for field in request.data.keys():
+            if field not in self._PERMITTED_FIELDS and request.data[field] != getattr(obj, field, None):
+                return False
         return True
 
     def has_permission(self, request, view):
@@ -44,7 +49,7 @@ class ModelPermissions(DjangoModelPermissions):
                 type(obj) == User and \
                 not request.user.has_perm('barbadosdb.view_user') and \
                 request.user.has_perm('barbadosdb.view_own_user') and \
-                (obj != request.user or not self._changes_permitted_fields(obj, request)):
+                (obj != request.user or not self._changes_permitted_user_fields(request, obj)):
             return False
         elif request.method == 'GET' and \
                 type(obj) == Boat and \

@@ -1,6 +1,7 @@
 from django.contrib.auth import models as auth_models
 from rest_framework.test import APIClient
 import pytest
+import json
 
 from barbados.barbadosweb.test_fixtures import *
 
@@ -134,5 +135,52 @@ def test_unauthenticated_get_user(ordinary_user):
     client = APIClient()
 
     response = client.get('/api/user/' + str(ordinary_user.id) + '/')
+    assert response.status_code == 403
+
+
+@pytest.mark.django_db()
+def test_ordinary_user_put_own_address(ordinary_user):
+    client = APIClient()
+    assert client.login(username=ordinary_user.username, password='password')
+
+    response = client.get('/api/user/' + str(ordinary_user.id) + '/')
+    user_content = json.loads(response.content.decode('utf-8'))
+    del user_content['url']
+    del user_content['boats']
+
+    user_content['city'] = 'Atlantis'
+    response = client.put('/api/user/' + str(ordinary_user.id) + '/', user_content, format='json')
+    assert response.status_code == 200
+
+
+@pytest.mark.django_db()
+def test_ordinary_user_put_own_name(ordinary_user):
+    client = APIClient()
+    assert client.login(username=ordinary_user.username, password='password')
+
+    response = client.get('/api/user/' + str(ordinary_user.id) + '/')
+    user_content = json.loads(response.content.decode('utf-8'))
+    del user_content['url']
+    del user_content['boats']
+
+    user_content['first_name'] = 'Ebeneezer'
+    response = client.put('/api/user/' + str(ordinary_user.id) + '/', user_content, format='json')
+    assert response.status_code == 403
+
+
+@pytest.mark.django_db()
+def test_ordinary_user_put_other_address(ordinary_user, other_ordinary_user):
+    client = APIClient()
+    assert client.login(username=other_ordinary_user.username, password='password')
+
+    response = client.get('/api/user/' + str(other_ordinary_user.id) + '/')
+    user_content = json.loads(response.content.decode('utf-8'))
+    del user_content['url']
+    del user_content['boats']
+
+    assert client.login(username=ordinary_user.username, password='password')
+
+    user_content['city'] = 'Atlantis'
+    response = client.put('/api/user/' + str(other_ordinary_user.id) + '/', user_content, format='json')
     assert response.status_code == 403
 

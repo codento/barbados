@@ -67,6 +67,8 @@ def test_modify_user_put(admin_user, ordinary_user):
 
     response = client.get('/api/user/' + str(ordinary_user.id) + '/')
     user_content = json.loads(response.content.decode('utf-8'))
+    del user_content['url']
+    del user_content['boats']
 
     user_content['city'] = 'Tampere'
     response = client.put('/api/user/' + str(ordinary_user.id) + '/', user_content, format='json')
@@ -164,6 +166,7 @@ def test_modify_boat_put(admin_user, boat):
 
     response = client.get('/api/boat/' + str(boat.id) + '/')
     boat_content = json.loads(response.content.decode('utf-8'))
+    del boat_content['url']
 
     boat_content['name'] = 'Olympic'
     response = client.put('/api/boat/' + str(boat.id) + '/', boat_content, format='json')
@@ -257,6 +260,8 @@ def test_modify_club_put(admin_user, club):
 
     response = client.get('/api/club/' + str(club.id) + '/')
     club_content = json.loads(response.content.decode('utf-8'))
+    del club_content['url']
+    del club_content['harbours']
 
     club_content['name'] = 'Other Yacht Club'
     response = client.put('/api/club/' + str(club.id) + '/', club_content, format='json')
@@ -354,6 +359,8 @@ def test_modify_harbour_put(admin_user, harbour):
 
     response = client.get('/api/harbour/' + str(harbour.id) + '/')
     harbour_content = json.loads(response.content.decode('utf-8'))
+    del harbour_content['url']
+    del harbour_content['jetties']
 
     harbour_content['name'] = 'Other Harbour'
     response = client.put('/api/harbour/' + str(harbour.id) + '/', harbour_content, format='json')
@@ -434,7 +441,6 @@ def test_create_jetty(admin_user, harbour):
         'harbour': harbour_url,
         'name': 'A'
     }, format='json')
-    print(response.content.decode('utf-8'))
     assert response.status_code == 201
     content = json.loads(response.content.decode('utf-8'))
     assert isinstance(content, dict)
@@ -452,6 +458,8 @@ def test_modify_jetty_put(admin_user, jetty):
 
     response = client.get('/api/jetty/' + str(jetty.id) + '/')
     jetty_content = json.loads(response.content.decode('utf-8'))
+    del jetty_content['url']
+    del jetty_content['berths']
 
     jetty_content['name'] = 'ZZ'
     response = client.put('/api/jetty/' + str(jetty.id) + '/', jetty_content, format='json')
@@ -549,6 +557,7 @@ def test_modify_berth_put(admin_user, berth):
 
     response = client.get('/api/berth/' + str(berth.id) + '/')
     berth_content = json.loads(response.content.decode('utf-8'))
+    del berth_content['url']
 
     berth_content['name'] = 'test'
     response = client.patch('/api/berth/' + str(berth.id) + '/', berth_content, format='json')
@@ -620,7 +629,6 @@ def test_deny_berth_to_boat(admin_user, berth, boat):
     response = client.patch('/api/berth/' + str(berth.id) + '/', {
         'boat': None
     }, format='json')
-    print(response.content.decode('utf-8'))
     assert response.status_code == 200
     content = json.loads(response.content.decode('utf-8'))
     assert isinstance(content, dict)
