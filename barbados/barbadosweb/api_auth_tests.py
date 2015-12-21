@@ -184,3 +184,30 @@ def test_ordinary_user_put_other_address(ordinary_user, other_ordinary_user):
     response = client.put('/api/user/' + str(other_ordinary_user.id) + '/', user_content, format='json')
     assert response.status_code == 403
 
+
+@pytest.mark.django_db()
+def test_ordinary_user_patch_own_address(ordinary_user):
+    client = APIClient()
+    assert client.login(username=ordinary_user.username, password='password')
+
+    response = client.patch('/api/user/' + str(ordinary_user.id) + '/', {'city': 'Atlantis'}, format='json')
+    assert response.status_code == 200
+
+
+@pytest.mark.django_db()
+def test_ordinary_user_patch_own_name(ordinary_user):
+    client = APIClient()
+    assert client.login(username=ordinary_user.username, password='password')
+
+    response = client.patch('/api/user/' + str(ordinary_user.id) + '/', {'first_name': 'Ebeneezer'}, format='json')
+    assert response.status_code == 403
+
+
+@pytest.mark.django_db()
+def test_ordinary_user_patch_other_address(ordinary_user, other_ordinary_user):
+    client = APIClient()
+    assert client.login(username=ordinary_user.username, password='password')
+
+    response = client.patch('/api/user/' + str(other_ordinary_user.id) + '/', {'city': 'Atlantis'}, format='json')
+    assert response.status_code == 403
+
