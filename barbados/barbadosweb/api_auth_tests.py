@@ -248,3 +248,110 @@ def test_ordinary_user_delete_other(ordinary_user, other_ordinary_user):
     assert response.status_code == 403
 
 # We have no special treatment for secretary or ordinary user deleting themselves
+
+
+# Boat tests
+
+@pytest.mark.django_db()
+def test_harbourmaster_list_boats(harbourmaster_user):
+    client = APIClient()
+    assert client.login(username=harbourmaster_user.username, password='password')
+
+    response = client.get('/api/boat/')
+    assert response.status_code == 200
+
+
+@pytest.mark.django_db()
+def test_harbourmaster_get_other_boat(harbourmaster_user, ordinary_user, boat):
+    boat.user = ordinary_user
+    boat.save()
+
+    client = APIClient()
+    assert client.login(username=harbourmaster_user.username, password='password')
+
+    response = client.get('/api/boat/' + str(boat.id) + '/')
+    assert response.status_code == 200
+
+
+@pytest.mark.django_db()
+def test_secretary_list_boats(secretary_user):
+    client = APIClient()
+    assert client.login(username=secretary_user.username, password='password')
+
+    response = client.get('/api/boat/')
+    assert response.status_code == 200
+
+
+@pytest.mark.django_db()
+def test_secretary_get_other_boat(secretary_user, ordinary_user, boat):
+    boat.user = ordinary_user
+    boat.save()
+
+    client = APIClient()
+    assert client.login(username=secretary_user.username, password='password')
+
+    response = client.get('/api/boat/' + str(boat.id) + '/')
+    assert response.status_code == 200
+
+
+@pytest.mark.django_db()
+def test_committee_member_list_boats(committee_member_user):
+    client = APIClient()
+    assert client.login(username=committee_member_user.username, password='password')
+
+    response = client.get('/api/boat/')
+    assert response.status_code == 200
+
+
+@pytest.mark.django_db()
+def test_committee_member_get_other_boat(committee_member_user, ordinary_user, boat):
+    boat.user = ordinary_user
+    boat.save()
+
+    client = APIClient()
+    assert client.login(username=committee_member_user.username, password='password')
+
+    response = client.get('/api/user/' + str(ordinary_user.id) + '/')
+    assert response.status_code == 200
+
+
+@pytest.mark.django_db()
+def test_ordinary_user_list_boats(ordinary_user):
+    client = APIClient()
+    assert client.login(username=ordinary_user.username, password='password')
+
+    response = client.get('/api/boat/')
+    assert response.status_code == 403
+
+
+@pytest.mark.django_db()
+def test_ordinary_user_get_own_boat(ordinary_user, boat):
+    boat.user = ordinary_user
+    boat.save()
+
+    client = APIClient()
+    assert client.login(username=ordinary_user.username, password='password')
+
+    response = client.get('/api/boat/' + str(boat.id) + '/')
+    assert response.status_code == 200
+
+
+@pytest.mark.django_db()
+def test_ordinary_user_get_other_boat(ordinary_user, other_ordinary_user, boat):
+    boat.user = other_ordinary_user
+    boat.save()
+
+    client = APIClient()
+    assert client.login(username=ordinary_user.username, password='password')
+
+    response = client.get('/api/boat/' + str(boat.id) + '/')
+    assert response.status_code == 403
+
+
+@pytest.mark.django_db()
+def test_unauthenticated_get_boat(boat):
+    client = APIClient()
+
+    response = client.get('/api/boat/' + str(boat.id) + '/')
+    assert response.status_code == 403
+
