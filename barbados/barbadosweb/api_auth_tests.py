@@ -211,3 +211,40 @@ def test_ordinary_user_patch_other_address(ordinary_user, other_ordinary_user):
     response = client.patch('/api/user/' + str(other_ordinary_user.id) + '/', {'city': 'Atlantis'}, format='json')
     assert response.status_code == 403
 
+
+@pytest.mark.django_db()
+def test_secretary_delete_user(secretary_user, ordinary_user):
+    client = APIClient()
+    assert client.login(username=secretary_user.username, password='password')
+
+    response = client.delete('/api/user/' + str(ordinary_user.id) + '/')
+    assert response.status_code == 204
+
+
+@pytest.mark.django_db()
+def test_harbourmaster_delete_user(harbourmaster_user, ordinary_user):
+    client = APIClient()
+    assert client.login(username=harbourmaster_user.username, password='password')
+
+    response = client.delete('/api/user/' + str(ordinary_user.id) + '/')
+    assert response.status_code == 403
+
+
+@pytest.mark.django_db()
+def test_committee_member_delete_user(committee_member_user, ordinary_user):
+    client = APIClient()
+    assert client.login(username=committee_member_user.username, password='password')
+
+    response = client.delete('/api/user/' + str(ordinary_user.id) + '/')
+    assert response.status_code == 403
+
+
+@pytest.mark.django_db()
+def test_ordinary_user_delete_other(ordinary_user, other_ordinary_user):
+    client = APIClient()
+    assert client.login(username=ordinary_user.username, password='password')
+
+    response = client.delete('/api/user/' + str(other_ordinary_user.id) + '/')
+    assert response.status_code == 403
+
+# We have no special treatment for secretary or ordinary user deleting themselves
