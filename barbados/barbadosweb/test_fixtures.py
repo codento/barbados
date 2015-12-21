@@ -14,35 +14,9 @@ def admin_user():
 
 
 @pytest.fixture
-def harbourmaster_user():
-    user = tests.UserFactory.create()
-    user.groups.add(auth_models.Group.objects.get(name__exact='Harbourmaster'))
-    user.set_password('password')
-    user.save()
-    return user
-
-
-@pytest.fixture
-def secretary_user():
-    user = tests.UserFactory.create()
-    user.groups.add(auth_models.Group.objects.get(name__exact='Membership secretary'))
-    user.set_password('password')
-    user.save()
-    return user
-
-
-@pytest.fixture
-def committee_member_user():
-    user = tests.UserFactory.create()
-    user.groups.add(auth_models.Group.objects.get(name__exact='Committee member'))
-    user.set_password('password')
-    user.save()
-    return user
-
-
-@pytest.fixture
 def ordinary_user():
     user = tests.UserFactory.create()
+    user.groups.add(auth_models.Group.objects.get(name__exact='Member'))
     user.set_password('password')
     user.save()
     return user

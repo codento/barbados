@@ -27,6 +27,9 @@ class User(auth_models.AbstractUser):
 
     class Meta:
         app_label = 'barbadosdb'
+        permissions = (('view_user', 'view a user'),
+                       ('view_own_user', 'view own user'),
+                       ('change_own_user', 'change own user'))
 
 
 class Boat(models.Model):
@@ -113,6 +116,8 @@ class Boat(models.Model):
 
     class Meta:
         app_label = 'barbadosdb'
+        permissions = (('view_boat', 'view a boat'),
+                       ('view_own_boat', 'view own boat'))
 
     def __str__(self):
         return self.name
@@ -142,6 +147,7 @@ class Club(models.Model):
 
     class Meta:
         app_label = 'barbadosdb'
+        permissions = (('view_club', 'view a club'),)
 
     def __str__(self):
         return self.name
@@ -159,6 +165,7 @@ class Harbour(models.Model):
 
     class Meta:
         app_label = 'barbadosdb'
+        permissions = (('view_harbour', 'view a harbour'),)
 
     def __str__(self):
         return self.name
@@ -178,6 +185,7 @@ class Jetty(models.Model):
         app_label = 'barbadosdb'
         unique_together = ('harbour', 'name')
         verbose_name_plural = _('Jetties')
+        permissions = (('view_jetty', 'view a jetty'),)
 
     def __str__(self):
         return self.name
@@ -199,6 +207,7 @@ class Berth(models.Model):
         app_label = 'barbadosdb'
         unique_together = ('jetty', 'name')
         permissions = (
+            ('view_berth', 'view a berth'),
             ('assign_berth_boat', 'Can assign a berth to a boat'),
             ('deny_berth_boat', 'Can deny a berth from a boat'),
         )
