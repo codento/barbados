@@ -48,6 +48,7 @@ def other_ordinary_user():
 
 
 # User tests
+# GET
 
 @pytest.mark.django_db()
 def test_harbourmaster_list_users(harbourmaster_user):
@@ -138,15 +139,19 @@ def test_unauthenticated_get_user(ordinary_user):
     assert response.status_code == 403
 
 
+# PUT
+
 @pytest.mark.django_db()
-def test_ordinary_user_put_own_address(ordinary_user):
+def test_ordinary_user_put_own_address(admin_user, ordinary_user):
     client = APIClient()
-    assert client.login(username=ordinary_user.username, password='password')
+    assert client.login(username=admin_user.username, password='password')
 
     response = client.get('/api/user/' + str(ordinary_user.id) + '/')
     user_content = json.loads(response.content.decode('utf-8'))
     del user_content['url']
     del user_content['boats']
+
+    assert client.login(username=ordinary_user.username, password='password')
 
     user_content['city'] = 'Atlantis'
     response = client.put('/api/user/' + str(ordinary_user.id) + '/', user_content, format='json')
@@ -154,14 +159,16 @@ def test_ordinary_user_put_own_address(ordinary_user):
 
 
 @pytest.mark.django_db()
-def test_ordinary_user_put_own_name(ordinary_user):
+def test_ordinary_user_put_own_name(admin_user, ordinary_user):
     client = APIClient()
-    assert client.login(username=ordinary_user.username, password='password')
+    assert client.login(username=admin_user.username, password='password')
 
     response = client.get('/api/user/' + str(ordinary_user.id) + '/')
     user_content = json.loads(response.content.decode('utf-8'))
     del user_content['url']
     del user_content['boats']
+
+    assert client.login(username=ordinary_user.username, password='password')
 
     user_content['first_name'] = 'Ebeneezer'
     response = client.put('/api/user/' + str(ordinary_user.id) + '/', user_content, format='json')
@@ -169,9 +176,9 @@ def test_ordinary_user_put_own_name(ordinary_user):
 
 
 @pytest.mark.django_db()
-def test_ordinary_user_put_other_address(ordinary_user, other_ordinary_user):
+def test_ordinary_user_put_other_address(admin_user, ordinary_user, other_ordinary_user):
     client = APIClient()
-    assert client.login(username=other_ordinary_user.username, password='password')
+    assert client.login(username=admin_user.username, password='password')
 
     response = client.get('/api/user/' + str(other_ordinary_user.id) + '/')
     user_content = json.loads(response.content.decode('utf-8'))
@@ -184,6 +191,25 @@ def test_ordinary_user_put_other_address(ordinary_user, other_ordinary_user):
     response = client.put('/api/user/' + str(other_ordinary_user.id) + '/', user_content, format='json')
     assert response.status_code == 403
 
+
+@pytest.mark.django_db()
+def test_secretary_put_other_address(admin_user, secretary_user, ordinary_user):
+    client = APIClient()
+    assert client.login(username=admin_user.username, password='password')
+
+    response = client.get('/api/user/' + str(ordinary_user.id) + '/')
+    user_content = json.loads(response.content.decode('utf-8'))
+    del user_content['url']
+    del user_content['boats']
+
+    assert client.login(username=secretary_user.username, password='password')
+
+    user_content['city'] = 'Atlantis'
+    response = client.put('/api/user/' + str(ordinary_user.id) + '/', user_content, format='json')
+    assert response.status_code == 200
+
+
+# PATCH
 
 @pytest.mark.django_db()
 def test_ordinary_user_patch_own_address(ordinary_user):
@@ -211,6 +237,17 @@ def test_ordinary_user_patch_other_address(ordinary_user, other_ordinary_user):
     response = client.patch('/api/user/' + str(other_ordinary_user.id) + '/', {'city': 'Atlantis'}, format='json')
     assert response.status_code == 403
 
+
+@pytest.mark.django_db()
+def test_secretary_patch_other_address(secretary_user, ordinary_user):
+    client = APIClient()
+    assert client.login(username=secretary_user.username, password='password')
+
+    response = client.patch('/api/user/' + str(ordinary_user.id) + '/', {'city': 'Atlantis'}, format='json')
+    assert response.status_code == 200
+
+
+# DELETE
 
 @pytest.mark.django_db()
 def test_secretary_delete_user(secretary_user, ordinary_user):
@@ -251,6 +288,7 @@ def test_ordinary_user_delete_other(ordinary_user, other_ordinary_user):
 
 
 # Boat tests
+# GET
 
 @pytest.mark.django_db()
 def test_harbourmaster_list_boats(harbourmaster_user):
@@ -354,4 +392,188 @@ def test_unauthenticated_get_boat(boat):
 
     response = client.get('/api/boat/' + str(boat.id) + '/')
     assert response.status_code == 403
+
+
+# PUT
+
+@pytest.mark.django_db()
+def test_ordinary_user_put_own_boat_name(admin_user, ordinary_user, boat):
+    boat.user = ordinary_user
+    boat.save()
+
+    client = APIClient()
+    assert client.login(username=admin_user.username, password='password')
+
+    response = client.get('/api/boat/' + str(boat.id) + '/')
+    boat_content = json.loads(response.content.decode('utf-8'))
+    del boat_content['url']
+    del boat_content['berth']
+
+    assert client.login(username=ordinary_user.username, password='password')
+
+    boat_content['name'] = 'African Queen'
+    response = client.put('/api/boat/' + str(boat.id) + '/', boat_content, format='json')
+    assert response.status_code == 403
+
+
+@pytest.mark.django_db()
+def test_ordinary_user_put_own_boat_berth(admin_user, ordinary_user, boat, berth):
+    boat.user = ordinary_user
+    boat.save()
+
+    client = APIClient()
+    assert client.login(username=admin_user.username, password='password')
+
+    response = client.get('/api/boat/' + str(boat.id) + '/')
+    boat_content = json.loads(response.content.decode('utf-8'))
+    del boat_content['url']
+    del boat_content['berth']
+
+    response = client.get('/api/berth/' + str(berth.id) + '/')
+    berth_content = json.loads(response.content.decode('utf-8'))
+    berth_url = berth_content['url']
+
+    assert client.login(username=ordinary_user.username, password='password')
+
+    boat_content['berth'] = berth_url
+    response = client.put('/api/boat/' + str(boat.id) + '/', boat_content, format='json')
+    assert response.status_code == 403
+
+
+@pytest.mark.django_db()
+def test_ordinary_user_put_other_boat_name(admin_user, ordinary_user, other_ordinary_user, boat):
+    boat.user = other_ordinary_user
+    boat.save()
+
+    client = APIClient()
+    assert client.login(username=admin_user.username, password='password')
+
+    response = client.get('/api/boat/' + str(boat.id) + '/')
+    boat_content = json.loads(response.content.decode('utf-8'))
+    del boat_content['url']
+    del boat_content['berth']
+
+    assert client.login(username=ordinary_user.username, password='password')
+
+    boat_content['city'] = 'Atlantis'
+    response = client.put('/api/boat/' + str(boat.id) + '/', boat_content, format='json')
+    assert response.status_code == 403
+
+
+@pytest.mark.django_db()
+def test_secretary_put_other_boat_name(admin_user, secretary_user, ordinary_user, boat):
+    boat.user = ordinary_user
+    boat.save()
+
+    client = APIClient()
+    assert client.login(username=admin_user.username, password='password')
+
+    response = client.get('/api/boat/' + str(boat.id) + '/')
+    boat_content = json.loads(response.content.decode('utf-8'))
+    del boat_content['url']
+    del boat_content['berth']
+
+    assert client.login(username=secretary_user.username, password='password')
+
+    boat_content['name'] = 'African Queen'
+    response = client.put('/api/boat/' + str(boat.id) + '/', boat_content, format='json')
+    assert response.status_code == 200
+
+
+@pytest.mark.django_db()
+def test_harbourmaster_put_boat_berth(admin_user, harbourmaster_user, ordinary_user, boat, berth):
+    boat.user = ordinary_user
+    boat.save()
+
+    client = APIClient()
+    assert client.login(username=admin_user.username, password='password')
+
+    response = client.get('/api/boat/' + str(boat.id) + '/')
+    boat_content = json.loads(response.content.decode('utf-8'))
+    del boat_content['url']
+    del boat_content['berth']
+
+    response = client.get('/api/berth/' + str(berth.id) + '/')
+    berth_content = json.loads(response.content.decode('utf-8'))
+    berth_url = berth_content['url']
+
+    assert client.login(username=harbourmaster_user.username, password='password')
+
+    boat_content['berth'] = berth_url
+    response = client.put('/api/boat/' + str(boat.id) + '/', boat_content, format='json')
+    assert response.status_code == 200
+
+
+# PATCH
+
+@pytest.mark.django_db()
+def test_ordinary_user_patch_own_boat_name(ordinary_user, boat):
+    boat.user = ordinary_user
+    boat.save()
+
+    client = APIClient()
+    assert client.login(username=ordinary_user.username, password='password')
+
+    response = client.patch('/api/boat/' + str(boat.id) + '/', {'name': 'African Queen'}, format='json')
+    assert response.status_code == 403
+
+
+@pytest.mark.django_db()
+def test_ordinary_user_patch_own_boat_berth(admin_user, ordinary_user, boat, berth):
+    boat.user = ordinary_user
+    boat.save()
+
+    client = APIClient()
+    assert client.login(username=admin_user.username, password='password')
+
+    response = client.get('/api/berth/' + str(berth.id) + '/')
+    berth_content = json.loads(response.content.decode('utf-8'))
+    berth_url = berth_content['url']
+
+    assert client.login(username=ordinary_user.username, password='password')
+
+    response = client.patch('/api/boat/' + str(boat.id) + '/', {'berth': berth_url}, format='json')
+    assert response.status_code == 403
+
+
+@pytest.mark.django_db()
+def test_ordinary_user_patch_other_boat_name(ordinary_user, other_ordinary_user, boat):
+    boat.user = other_ordinary_user
+    boat.save()
+
+    client = APIClient()
+    assert client.login(username=ordinary_user.username, password='password')
+
+    response = client.patch('/api/boat/' + str(boat.id) + '/', {'name': 'African Queen'}, format='json')
+    assert response.status_code == 403
+
+
+@pytest.mark.django_db()
+def test_secretary_patch_other_boat_name(secretary_user, ordinary_user, boat):
+    boat.user = ordinary_user
+    boat.save()
+
+    client = APIClient()
+    assert client.login(username=secretary_user.username, password='password')
+
+    response = client.patch('/api/boat/' + str(boat.id) + '/', {'name': 'African Queen'}, format='json')
+    assert response.status_code == 200
+
+
+@pytest.mark.django_db()
+def test_harbourmaster_patch_boat_berth(admin_user, harbourmaster_user, ordinary_user, boat, berth):
+    boat.user = ordinary_user
+    boat.save()
+
+    client = APIClient()
+    assert client.login(username=admin_user.username, password='password')
+
+    response = client.get('/api/berth/' + str(berth.id) + '/')
+    berth_content = json.loads(response.content.decode('utf-8'))
+    berth_url = berth_content['url']
+
+    assert client.login(username=harbourmaster_user.username, password='password')
+
+    response = client.patch('/api/boat/' + str(boat.id) + '/', {'berth': berth_url}, format='json')
+    assert response.status_code == 200
 

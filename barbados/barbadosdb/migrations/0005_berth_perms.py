@@ -14,7 +14,7 @@ class Migration(migrations.Migration):
     operations = [
         migrations.AlterModelOptions(
             name='berth',
-            options={'permissions': (('assign_berth_boat', 'Can assign a berth to a boat'), ('deny_berth_boat', 'Can deny a berth from a boat'))},
+            options={'permissions': (('assign_berth_boat', 'Can assign a berth to a boat'),)},
         ),
         migrations.AlterModelOptions(
             name='jetty',

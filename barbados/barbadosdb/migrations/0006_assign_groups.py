@@ -29,7 +29,7 @@ def assign_permissions(apps, schema_editor):
 
     group_defs = {'Membership secretary': ('add_user', 'change_user', 'delete_user',
                                             'add_boat', 'change_boat', 'delete_boat'),
-                'Harbourmaster': ('assign_berth_boat', 'deny_berth_boat')}
+                'Harbourmaster': ('assign_berth_boat',)}
 
     permissions = {}
     relevant_objs = models.Q(codename__contains='user') | models.Q(codename__contains='boat')
