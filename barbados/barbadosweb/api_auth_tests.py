@@ -577,3 +577,41 @@ def test_harbourmaster_patch_boat_berth(admin_user, harbourmaster_user, ordinary
     response = client.patch('/api/boat/' + str(boat.id) + '/', {'berth': berth_url}, format='json')
     assert response.status_code == 200
 
+
+# DELETE
+
+@pytest.mark.django_db()
+def test_secretary_delete_boat(secretary_user, boat):
+    client = APIClient()
+    assert client.login(username=secretary_user.username, password='password')
+
+    response = client.delete('/api/boat/' + str(boat.id) + '/')
+    assert response.status_code == 204
+
+
+@pytest.mark.django_db()
+def test_harbourmaster_delete_boat(harbourmaster_user, boat):
+    client = APIClient()
+    assert client.login(username=harbourmaster_user.username, password='password')
+
+    response = client.delete('/api/boat/' + str(boat.id) + '/')
+    assert response.status_code == 403
+
+
+@pytest.mark.django_db()
+def test_committee_member_delete_boat(committee_member_user, boat):
+    client = APIClient()
+    assert client.login(username=committee_member_user.username, password='password')
+
+    response = client.delete('/api/boat/' + str(boat.id) + '/')
+    assert response.status_code == 403
+
+
+@pytest.mark.django_db()
+def test_ordinary_user_delete_boat(ordinary_user, boat):
+    client = APIClient()
+    assert client.login(username=ordinary_user.username, password='password')
+
+    response = client.delete('/api/boat/' + str(boat.id) + '/')
+    assert response.status_code == 403
+
