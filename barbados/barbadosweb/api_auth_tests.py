@@ -502,8 +502,7 @@ def test_harbourmaster_post_boat(admin_user, harbourmaster_user, ordinary_user):
     assert client.login(username=admin_user.username, password='password')
 
     response = client.get('/api/user/' + str(ordinary_user.id) + '/')
-    user_content = json.loads(response.content.decode('utf-8'))
-    user_url = user_content['url']
+    user_url = json.loads(response.content.decode('utf-8'))['url']
 
     assert client.login(username=harbourmaster_user.username, password='password')
 
@@ -520,8 +519,7 @@ def test_secretary_post_boat(admin_user, secretary_user, ordinary_user):
     assert client.login(username=admin_user.username, password='password')
 
     response = client.get('/api/user/' + str(ordinary_user.id) + '/')
-    user_content = json.loads(response.content.decode('utf-8'))
-    user_url = user_content['url']
+    user_url = json.loads(response.content.decode('utf-8'))['url']
 
     assert client.login(username=secretary_user.username, password='password')
 
@@ -538,8 +536,7 @@ def test_committee_member_post_boat(admin_user, committee_member_user, ordinary_
     assert client.login(username=admin_user.username, password='password')
 
     response = client.get('/api/user/' + str(ordinary_user.id) + '/')
-    user_content = json.loads(response.content.decode('utf-8'))
-    user_url = user_content['url']
+    user_url = json.loads(response.content.decode('utf-8'))['url']
 
     assert client.login(username=committee_member_user.username, password='password')
 
@@ -556,8 +553,7 @@ def test_ordinary_user_post_boat(admin_user, ordinary_user):
     assert client.login(username=admin_user.username, password='password')
 
     response = client.get('/api/user/' + str(ordinary_user.id) + '/')
-    user_content = json.loads(response.content.decode('utf-8'))
-    user_url = user_content['url']
+    user_url = json.loads(response.content.decode('utf-8'))['url']
 
     assert client.login(username=ordinary_user.username, password='password')
 
@@ -575,8 +571,7 @@ def test_unauthenticated_post_boat(admin_user, ordinary_user):
     assert client.login(username=admin_user.username, password='password')
 
     response = client.get('/api/user/' + str(ordinary_user.id) + '/')
-    user_content = json.loads(response.content.decode('utf-8'))
-    user_url = user_content['url']
+    user_url = json.loads(response.content.decode('utf-8'))['url']
 
     client.logout()
 
@@ -623,8 +618,7 @@ def test_ordinary_user_put_own_boat_berth(admin_user, ordinary_user, boat, berth
     del boat_content['berth']
 
     response = client.get('/api/berth/' + str(berth.id) + '/')
-    berth_content = json.loads(response.content.decode('utf-8'))
-    berth_url = berth_content['url']
+    berth_url = json.loads(response.content.decode('utf-8'))['url']
 
     assert client.login(username=ordinary_user.username, password='password')
 
@@ -687,8 +681,7 @@ def test_harbourmaster_put_boat_berth(admin_user, harbourmaster_user, ordinary_u
     del boat_content['berth']
 
     response = client.get('/api/berth/' + str(berth.id) + '/')
-    berth_content = json.loads(response.content.decode('utf-8'))
-    berth_url = berth_content['url']
+    berth_url = json.loads(response.content.decode('utf-8'))['url']
 
     assert client.login(username=harbourmaster_user.username, password='password')
 
@@ -720,8 +713,7 @@ def test_ordinary_user_patch_own_boat_berth(admin_user, ordinary_user, boat, ber
     assert client.login(username=admin_user.username, password='password')
 
     response = client.get('/api/berth/' + str(berth.id) + '/')
-    berth_content = json.loads(response.content.decode('utf-8'))
-    berth_url = berth_content['url']
+    berth_url = json.loads(response.content.decode('utf-8'))['url']
 
     assert client.login(username=ordinary_user.username, password='password')
 
@@ -762,8 +754,7 @@ def test_harbourmaster_patch_boat_berth(admin_user, harbourmaster_user, ordinary
     assert client.login(username=admin_user.username, password='password')
 
     response = client.get('/api/berth/' + str(berth.id) + '/')
-    berth_content = json.loads(response.content.decode('utf-8'))
-    berth_url = berth_content['url']
+    berth_url = json.loads(response.content.decode('utf-8'))['url']
 
     assert client.login(username=harbourmaster_user.username, password='password')
 
@@ -1089,5 +1080,1236 @@ def test_unauthenticated_delete_club(club):
     client = APIClient()
 
     response = client.delete('/api/club/' + str(club.id) + '/')
+    assert response.status_code == 403
+
+
+# Harbour tests
+# GET
+
+@pytest.mark.django_db()
+def test_harbourmaster_list_harbours(harbourmaster_user):
+    client = APIClient()
+    assert client.login(username=harbourmaster_user.username, password='password')
+
+    response = client.get('/api/harbour/')
+    assert response.status_code == 200
+
+
+@pytest.mark.django_db()
+def test_harbourmaster_get_harbour(harbourmaster_user, harbour):
+    client = APIClient()
+    assert client.login(username=harbourmaster_user.username, password='password')
+
+    response = client.get('/api/harbour/' + str(harbour.id) + '/')
+    assert response.status_code == 200
+
+
+@pytest.mark.django_db()
+def test_secretary_list_harbours(secretary_user):
+    client = APIClient()
+    assert client.login(username=secretary_user.username, password='password')
+
+    response = client.get('/api/harbour/')
+    assert response.status_code == 200
+
+
+@pytest.mark.django_db()
+def test_secretary_get_harbour(secretary_user, harbour):
+    client = APIClient()
+    assert client.login(username=secretary_user.username, password='password')
+
+    response = client.get('/api/harbour/' + str(harbour.id) + '/')
+    assert response.status_code == 200
+
+
+@pytest.mark.django_db()
+def test_committee_member_list_harbours(committee_member_user):
+    client = APIClient()
+    assert client.login(username=committee_member_user.username, password='password')
+
+    response = client.get('/api/harbour/')
+    assert response.status_code == 200
+
+
+@pytest.mark.django_db()
+def test_committee_member_get_harbour(committee_member_user, harbour):
+    client = APIClient()
+    assert client.login(username=committee_member_user.username, password='password')
+
+    response = client.get('/api/harbour/' + str(harbour.id) + '/')
+    assert response.status_code == 200
+
+
+@pytest.mark.django_db()
+def test_ordinary_user_list_harbours(ordinary_user):
+    client = APIClient()
+    assert client.login(username=ordinary_user.username, password='password')
+
+    response = client.get('/api/harbour/')
+    assert response.status_code == 200
+
+
+@pytest.mark.django_db()
+def test_ordinary_user_get_harbour(ordinary_user, harbour):
+    client = APIClient()
+    assert client.login(username=ordinary_user.username, password='password')
+
+    response = client.get('/api/harbour/' + str(harbour.id) + '/')
+    assert response.status_code == 200
+
+
+@pytest.mark.django_db()
+def test_unauthenticated_list_harbours():
+    client = APIClient()
+
+    response = client.get('/api/harbour/')
+    assert response.status_code == 403
+
+
+@pytest.mark.django_db()
+def test_unauthenticated_get_harbour(harbour):
+    client = APIClient()
+
+    response = client.get('/api/harbour/' + str(harbour.id) + '/')
+    assert response.status_code == 403
+
+
+# POST
+
+@pytest.mark.django_db()
+def test_harbourmaster_post_harbour(admin_user, harbourmaster_user, club):
+    client = APIClient()
+    assert client.login(username=admin_user.username, password='password')
+
+    response = client.get('/api/club/' + str(club.id) + '/')
+    club_url = json.loads(response.content.decode('utf-8'))['url']
+
+    assert client.login(username=harbourmaster_user.username, password='password')
+
+    response = client.post('/api/harbour/', {
+        'club': club_url,
+        'name': 'Kalasatama'
+    }, format='json')
+    assert response.status_code == 403
+
+
+@pytest.mark.django_db()
+def test_secretary_post_harbour(admin_user, secretary_user, club):
+    client = APIClient()
+    assert client.login(username=admin_user.username, password='password')
+
+    response = client.get('/api/club/' + str(club.id) + '/')
+    club_url = json.loads(response.content.decode('utf-8'))['url']
+
+    assert client.login(username=secretary_user.username, password='password')
+
+    response = client.post('/api/harbour/', {
+        'club': club_url,
+        'name': 'Kalasatama'
+    }, format='json')
+    assert response.status_code == 403
+
+
+@pytest.mark.django_db()
+def test_committee_member_post_harbour(admin_user, committee_member_user, club):
+    client = APIClient()
+    assert client.login(username=admin_user.username, password='password')
+
+    response = client.get('/api/club/' + str(club.id) + '/')
+    club_url = json.loads(response.content.decode('utf-8'))['url']
+
+    assert client.login(username=committee_member_user.username, password='password')
+
+    response = client.post('/api/harbour/', {
+        'club': club_url,
+        'name': 'Kalasatama'
+    }, format='json')
+    assert response.status_code == 403
+
+
+@pytest.mark.django_db()
+def test_ordinary_user_post_harbour(admin_user, ordinary_user, club):
+    client = APIClient()
+    assert client.login(username=admin_user.username, password='password')
+
+    response = client.get('/api/club/' + str(club.id) + '/')
+    club_url = json.loads(response.content.decode('utf-8'))['url']
+
+    assert client.login(username=ordinary_user.username, password='password')
+
+    response = client.post('/api/harbour/', {
+        'club': club_url,
+        'name': 'Kalasatama'
+    }, format='json')
+    assert response.status_code == 403
+
+
+@pytest.mark.django_db()
+def test_unauthenticated_post_harbour(admin_user, club):
+    client = APIClient()
+    assert client.login(username=admin_user.username, password='password')
+
+    response = client.get('/api/club/' + str(club.id) + '/')
+    club_url = json.loads(response.content.decode('utf-8'))['url']
+
+    client.logout()
+
+    response = client.post('/api/harbour/', {
+        'club': club_url,
+        'name': 'Kalasatama'
+    }, format='json')
+    assert response.status_code == 403
+
+
+# PUT
+
+@pytest.mark.django_db()
+def test_harbourmaster_put_harbour(admin_user, harbourmaster_user, harbour):
+    client = APIClient()
+    assert client.login(username=admin_user.username, password='password')
+
+    response = client.get('/api/harbour/' + str(harbour.id) + '/')
+    harbour_content = json.loads(response.content.decode('utf-8'))
+    del harbour_content['url']
+    del harbour_content['jetties']
+
+    assert client.login(username=harbourmaster_user.username, password='password')
+
+    harbour_content['name'] = 'Kalasatama'
+    response = client.put('/api/harbour/' + str(harbour.id) + '/', harbour_content, format='json')
+    assert response.status_code == 403
+
+
+@pytest.mark.django_db()
+def test_secretary_put_harbour(admin_user, secretary_user, harbour):
+    client = APIClient()
+    assert client.login(username=admin_user.username, password='password')
+
+    response = client.get('/api/harbour/' + str(harbour.id) + '/')
+    harbour_content = json.loads(response.content.decode('utf-8'))
+    del harbour_content['url']
+    del harbour_content['jetties']
+
+    assert client.login(username=secretary_user.username, password='password')
+
+    harbour_content['name'] = 'Kalasatama'
+    response = client.put('/api/harbour/' + str(harbour.id) + '/', harbour_content, format='json')
+    assert response.status_code == 403
+
+
+@pytest.mark.django_db()
+def test_committee_member_put_harbour(admin_user, committee_member_user, harbour):
+    client = APIClient()
+    assert client.login(username=admin_user.username, password='password')
+
+    response = client.get('/api/harbour/' + str(harbour.id) + '/')
+    harbour_content = json.loads(response.content.decode('utf-8'))
+    del harbour_content['url']
+    del harbour_content['jetties']
+
+    assert client.login(username=committee_member_user.username, password='password')
+
+    harbour_content['name'] = 'Kalasatama'
+    response = client.put('/api/harbour/' + str(harbour.id) + '/', harbour_content, format='json')
+    assert response.status_code == 403
+
+
+@pytest.mark.django_db()
+def test_ordinary_user_put_harbour(admin_user, ordinary_user, harbour):
+    client = APIClient()
+    assert client.login(username=admin_user.username, password='password')
+
+    response = client.get('/api/harbour/' + str(harbour.id) + '/')
+    harbour_content = json.loads(response.content.decode('utf-8'))
+    del harbour_content['url']
+    del harbour_content['jetties']
+
+    assert client.login(username=ordinary_user.username, password='password')
+
+    harbour_content['name'] = 'Kalasatama'
+    response = client.put('/api/harbour/' + str(harbour.id) + '/', harbour_content, format='json')
+    assert response.status_code == 403
+
+
+@pytest.mark.django_db()
+def test_unauthorized_put_harbour(admin_user, harbour):
+    client = APIClient()
+    assert client.login(username=admin_user.username, password='password')
+
+    response = client.get('/api/harbour/' + str(harbour.id) + '/')
+    harbour_content = json.loads(response.content.decode('utf-8'))
+    del harbour_content['url']
+    del harbour_content['jetties']
+
+    client.logout()
+
+    harbour_content['name'] = 'Kalasatama'
+    response = client.put('/api/harbour/' + str(harbour.id) + '/', harbour_content, format='json')
+    assert response.status_code == 403
+
+
+# PATCH
+
+@pytest.mark.django_db()
+def test_harbourmaster_patch_harbour(harbourmaster_user, harbour):
+    client = APIClient()
+    assert client.login(username=harbourmaster_user.username, password='password')
+
+    response = client.patch('/api/harbour/' + str(harbour.id) + '/', {'name': 'Some Harbour'}, format='json')
+    assert response.status_code == 403
+
+
+@pytest.mark.django_db()
+def test_secretary_patch_harbour(secretary_user, harbour):
+    client = APIClient()
+    assert client.login(username=secretary_user.username, password='password')
+
+    response = client.patch('/api/harbour/' + str(harbour.id) + '/', {'name': 'Some Harbour'}, format='json')
+    assert response.status_code == 403
+
+
+@pytest.mark.django_db()
+def test_committee_member_patch_harbour(committee_member_user, harbour):
+    client = APIClient()
+    assert client.login(username=committee_member_user.username, password='password')
+
+    response = client.patch('/api/harbour/' + str(harbour.id) + '/', {'name': 'Some Harbour'}, format='json')
+    assert response.status_code == 403
+
+
+@pytest.mark.django_db()
+def test_ordinary_user_patch_harbour(ordinary_user, harbour):
+    client = APIClient()
+    assert client.login(username=ordinary_user.username, password='password')
+
+    response = client.patch('/api/harbour/' + str(harbour.id) + '/', {'name': 'Some Harbour'}, format='json')
+    assert response.status_code == 403
+
+
+@pytest.mark.django_db()
+def test_unauthorized_patch_harbour(harbour):
+    client = APIClient()
+
+    response = client.patch('/api/harbour/' + str(harbour.id) + '/', {'name': 'Some Harbour'}, format='json')
+    assert response.status_code == 403
+
+
+# DELETE
+
+@pytest.mark.django_db()
+def test_secretary_delete_harbour(secretary_user, harbour):
+    client = APIClient()
+    assert client.login(username=secretary_user.username, password='password')
+
+    response = client.delete('/api/harbour/' + str(harbour.id) + '/')
+    assert response.status_code == 403
+
+
+@pytest.mark.django_db()
+def test_harbourmaster_delete_harbour(harbourmaster_user, harbour):
+    client = APIClient()
+    assert client.login(username=harbourmaster_user.username, password='password')
+
+    response = client.delete('/api/harbour/' + str(harbour.id) + '/')
+    assert response.status_code == 403
+
+
+@pytest.mark.django_db()
+def test_committee_member_delete_harbour(committee_member_user, harbour):
+    client = APIClient()
+    assert client.login(username=committee_member_user.username, password='password')
+
+    response = client.delete('/api/harbour/' + str(harbour.id) + '/')
+    assert response.status_code == 403
+
+
+@pytest.mark.django_db()
+def test_ordinary_user_delete_harbour(ordinary_user, harbour):
+    client = APIClient()
+    assert client.login(username=ordinary_user.username, password='password')
+
+    response = client.delete('/api/harbour/' + str(harbour.id) + '/')
+    assert response.status_code == 403
+
+
+@pytest.mark.django_db()
+def test_unauthenticated_delete_harbour(harbour):
+    client = APIClient()
+
+    response = client.delete('/api/harbour/' + str(harbour.id) + '/')
+    assert response.status_code == 403
+
+
+# Jetty tests
+# GET
+
+@pytest.mark.django_db()
+def test_harbourmaster_list_jetties(harbourmaster_user):
+    client = APIClient()
+    assert client.login(username=harbourmaster_user.username, password='password')
+
+    response = client.get('/api/jetty/')
+    assert response.status_code == 200
+
+
+@pytest.mark.django_db()
+def test_harbourmaster_get_jetty(harbourmaster_user, jetty):
+    client = APIClient()
+    assert client.login(username=harbourmaster_user.username, password='password')
+
+    response = client.get('/api/jetty/' + str(jetty.id) + '/')
+    assert response.status_code == 200
+
+
+@pytest.mark.django_db()
+def test_secretary_list_jetties(secretary_user):
+    client = APIClient()
+    assert client.login(username=secretary_user.username, password='password')
+
+    response = client.get('/api/jetty/')
+    assert response.status_code == 200
+
+
+@pytest.mark.django_db()
+def test_secretary_get_jetty(secretary_user, jetty):
+    client = APIClient()
+    assert client.login(username=secretary_user.username, password='password')
+
+    response = client.get('/api/jetty/' + str(jetty.id) + '/')
+    assert response.status_code == 200
+
+
+@pytest.mark.django_db()
+def test_committee_member_list_jetties(committee_member_user):
+    client = APIClient()
+    assert client.login(username=committee_member_user.username, password='password')
+
+    response = client.get('/api/jetty/')
+    assert response.status_code == 200
+
+
+@pytest.mark.django_db()
+def test_committee_member_get_jetty(committee_member_user, jetty):
+    client = APIClient()
+    assert client.login(username=committee_member_user.username, password='password')
+
+    response = client.get('/api/jetty/' + str(jetty.id) + '/')
+    assert response.status_code == 200
+
+
+@pytest.mark.django_db()
+def test_ordinary_user_list_jetties(ordinary_user):
+    client = APIClient()
+    assert client.login(username=ordinary_user.username, password='password')
+
+    response = client.get('/api/jetty/')
+    assert response.status_code == 200
+
+
+@pytest.mark.django_db()
+def test_ordinary_user_get_jetty(ordinary_user, jetty):
+    client = APIClient()
+    assert client.login(username=ordinary_user.username, password='password')
+
+    response = client.get('/api/jetty/' + str(jetty.id) + '/')
+    assert response.status_code == 200
+
+
+@pytest.mark.django_db()
+def test_unauthenticated_list_jetties():
+    client = APIClient()
+
+    response = client.get('/api/jetty/')
+    assert response.status_code == 403
+
+
+@pytest.mark.django_db()
+def test_unauthenticated_get_jetty(jetty):
+    client = APIClient()
+
+    response = client.get('/api/jetty/' + str(jetty.id) + '/')
+    assert response.status_code == 403
+
+
+# POST
+
+@pytest.mark.django_db()
+def test_harbourmaster_post_jetty(admin_user, harbourmaster_user, harbour):
+    client = APIClient()
+    assert client.login(username=admin_user.username, password='password')
+
+    response = client.get('/api/harbour/' + str(harbour.id) + '/')
+    harbour_url = json.loads(response.content.decode('utf-8'))['url']
+
+    assert client.login(username=harbourmaster_user.username, password='password')
+
+    response = client.post('/api/jetty/', {
+        'harbour': harbour_url,
+        'name': 'Aa'
+    }, format='json')
+    assert response.status_code == 403
+
+
+@pytest.mark.django_db()
+def test_secretary_post_jetty(admin_user, secretary_user, harbour):
+    client = APIClient()
+    assert client.login(username=admin_user.username, password='password')
+
+    response = client.get('/api/harbour/' + str(harbour.id) + '/')
+    harbour_url = json.loads(response.content.decode('utf-8'))['url']
+
+    assert client.login(username=secretary_user.username, password='password')
+
+    response = client.post('/api/jetty/', {
+        'harbour': harbour_url,
+        'name': 'Aa'
+    }, format='json')
+    assert response.status_code == 403
+
+
+@pytest.mark.django_db()
+def test_committee_member_post_jetty(admin_user, committee_member_user, harbour):
+    client = APIClient()
+    assert client.login(username=admin_user.username, password='password')
+
+    response = client.get('/api/harbour/' + str(harbour.id) + '/')
+    harbour_url = json.loads(response.content.decode('utf-8'))['url']
+
+    assert client.login(username=committee_member_user.username, password='password')
+
+    response = client.post('/api/jetty/', {
+        'harbour': harbour_url,
+        'name': 'Aa'
+    }, format='json')
+    assert response.status_code == 403
+
+
+@pytest.mark.django_db()
+def test_ordinary_user_post_jetty(admin_user, ordinary_user, harbour):
+    client = APIClient()
+    assert client.login(username=admin_user.username, password='password')
+
+    response = client.get('/api/harbour/' + str(harbour.id) + '/')
+    harbour_url = json.loads(response.content.decode('utf-8'))['url']
+
+    assert client.login(username=ordinary_user.username, password='password')
+
+    response = client.post('/api/jetty/', {
+        'harbour': harbour_url,
+        'name': 'Aa'
+    }, format='json')
+    assert response.status_code == 403
+
+
+@pytest.mark.django_db()
+def test_unauthenticated_post_jetty(admin_user, harbour):
+    client = APIClient()
+    assert client.login(username=admin_user.username, password='password')
+
+    response = client.get('/api/harbour/' + str(harbour.id) + '/')
+    harbour_url = json.loads(response.content.decode('utf-8'))['url']
+
+    client.logout()
+
+    response = client.post('/api/jetty/', {
+        'harbour': harbour_url,
+        'name': 'Aa'
+    }, format='json')
+    assert response.status_code == 403
+
+
+# PUT
+
+@pytest.mark.django_db()
+def test_harbourmaster_put_jetty(admin_user, harbourmaster_user, jetty):
+    client = APIClient()
+    assert client.login(username=admin_user.username, password='password')
+
+    response = client.get('/api/jetty/' + str(jetty.id) + '/')
+    jetty_content = json.loads(response.content.decode('utf-8'))
+    del jetty_content['url']
+    del jetty_content['berths']
+
+    assert client.login(username=harbourmaster_user.username, password='password')
+
+    jetty_content['name'] = 'Aa'
+    response = client.put('/api/jetty/' + str(jetty.id) + '/', jetty_content, format='json')
+    assert response.status_code == 403
+
+
+@pytest.mark.django_db()
+def test_secretary_put_jetty(admin_user, secretary_user, jetty):
+    client = APIClient()
+    assert client.login(username=admin_user.username, password='password')
+
+    response = client.get('/api/jetty/' + str(jetty.id) + '/')
+    jetty_content = json.loads(response.content.decode('utf-8'))
+    del jetty_content['url']
+    del jetty_content['berths']
+
+    assert client.login(username=secretary_user.username, password='password')
+
+    jetty_content['name'] = 'Aa'
+    response = client.put('/api/jetty/' + str(jetty.id) + '/', jetty_content, format='json')
+    assert response.status_code == 403
+
+
+@pytest.mark.django_db()
+def test_committee_member_put_jetty(admin_user, committee_member_user, jetty):
+    client = APIClient()
+    assert client.login(username=admin_user.username, password='password')
+
+    response = client.get('/api/jetty/' + str(jetty.id) + '/')
+    jetty_content = json.loads(response.content.decode('utf-8'))
+    del jetty_content['url']
+    del jetty_content['berths']
+
+    assert client.login(username=committee_member_user.username, password='password')
+
+    jetty_content['name'] = 'Aa'
+    response = client.put('/api/jetty/' + str(jetty.id) + '/', jetty_content, format='json')
+    assert response.status_code == 403
+
+
+@pytest.mark.django_db()
+def test_ordinary_user_put_jetty(admin_user, ordinary_user, jetty):
+    client = APIClient()
+    assert client.login(username=admin_user.username, password='password')
+
+    response = client.get('/api/jetty/' + str(jetty.id) + '/')
+    jetty_content = json.loads(response.content.decode('utf-8'))
+    del jetty_content['url']
+    del jetty_content['berths']
+
+    assert client.login(username=ordinary_user.username, password='password')
+
+    jetty_content['name'] = 'Aa'
+    response = client.put('/api/jetty/' + str(jetty.id) + '/', jetty_content, format='json')
+    assert response.status_code == 403
+
+
+@pytest.mark.django_db()
+def test_unauthorized_put_jetty(admin_user, jetty):
+    client = APIClient()
+    assert client.login(username=admin_user.username, password='password')
+
+    response = client.get('/api/jetty/' + str(jetty.id) + '/')
+    jetty_content = json.loads(response.content.decode('utf-8'))
+    del jetty_content['url']
+    del jetty_content['berths']
+
+    client.logout()
+
+    jetty_content['name'] = 'Aa'
+    response = client.put('/api/jetty/' + str(jetty.id) + '/', jetty_content, format='json')
+    assert response.status_code == 403
+
+
+# PATCH
+
+@pytest.mark.django_db()
+def test_harbourmaster_patch_jetty(harbourmaster_user, jetty):
+    client = APIClient()
+    assert client.login(username=harbourmaster_user.username, password='password')
+
+    response = client.patch('/api/jetty/' + str(jetty.id) + '/', {'name': 'Some Jetty'}, format='json')
+    assert response.status_code == 403
+
+
+@pytest.mark.django_db()
+def test_secretary_patch_jetty(secretary_user, jetty):
+    client = APIClient()
+    assert client.login(username=secretary_user.username, password='password')
+
+    response = client.patch('/api/jetty/' + str(jetty.id) + '/', {'name': 'Some Jetty'}, format='json')
+    assert response.status_code == 403
+
+
+@pytest.mark.django_db()
+def test_committee_member_patch_jetty(committee_member_user, jetty):
+    client = APIClient()
+    assert client.login(username=committee_member_user.username, password='password')
+
+    response = client.patch('/api/jetty/' + str(jetty.id) + '/', {'name': 'Some Jetty'}, format='json')
+    assert response.status_code == 403
+
+
+@pytest.mark.django_db()
+def test_ordinary_user_patch_jetty(ordinary_user, jetty):
+    client = APIClient()
+    assert client.login(username=ordinary_user.username, password='password')
+
+    response = client.patch('/api/jetty/' + str(jetty.id) + '/', {'name': 'Some Jetty'}, format='json')
+    assert response.status_code == 403
+
+
+@pytest.mark.django_db()
+def test_unauthorized_patch_jetty(jetty):
+    client = APIClient()
+
+    response = client.patch('/api/jetty/' + str(jetty.id) + '/', {'name': 'Some Jetty'}, format='json')
+    assert response.status_code == 403
+
+
+# DELETE
+
+@pytest.mark.django_db()
+def test_secretary_delete_jetty(secretary_user, jetty):
+    client = APIClient()
+    assert client.login(username=secretary_user.username, password='password')
+
+    response = client.delete('/api/jetty/' + str(jetty.id) + '/')
+    assert response.status_code == 403
+
+
+@pytest.mark.django_db()
+def test_harbourmaster_delete_jetty(harbourmaster_user, jetty):
+    client = APIClient()
+    assert client.login(username=harbourmaster_user.username, password='password')
+
+    response = client.delete('/api/jetty/' + str(jetty.id) + '/')
+    assert response.status_code == 403
+
+
+@pytest.mark.django_db()
+def test_committee_member_delete_jetty(committee_member_user, jetty):
+    client = APIClient()
+    assert client.login(username=committee_member_user.username, password='password')
+
+    response = client.delete('/api/jetty/' + str(jetty.id) + '/')
+    assert response.status_code == 403
+
+
+@pytest.mark.django_db()
+def test_ordinary_user_delete_jetty(ordinary_user, jetty):
+    client = APIClient()
+    assert client.login(username=ordinary_user.username, password='password')
+
+    response = client.delete('/api/jetty/' + str(jetty.id) + '/')
+    assert response.status_code == 403
+
+
+@pytest.mark.django_db()
+def test_unauthenticated_delete_jetty(jetty):
+    client = APIClient()
+
+    response = client.delete('/api/jetty/' + str(jetty.id) + '/')
+    assert response.status_code == 403
+
+
+# Berth tests
+# GET
+
+@pytest.mark.django_db()
+def test_harbourmaster_list_berths(harbourmaster_user):
+    client = APIClient()
+    assert client.login(username=harbourmaster_user.username, password='password')
+
+    response = client.get('/api/berth/')
+    assert response.status_code == 200
+
+
+@pytest.mark.django_db()
+def test_harbourmaster_get_berth(harbourmaster_user, berth):
+    client = APIClient()
+    assert client.login(username=harbourmaster_user.username, password='password')
+
+    response = client.get('/api/berth/' + str(berth.id) + '/')
+    assert response.status_code == 200
+
+
+@pytest.mark.django_db()
+def test_secretary_list_berths(secretary_user):
+    client = APIClient()
+    assert client.login(username=secretary_user.username, password='password')
+
+    response = client.get('/api/berth/')
+    assert response.status_code == 200
+
+
+@pytest.mark.django_db()
+def test_secretary_get_berth(secretary_user, berth):
+    client = APIClient()
+    assert client.login(username=secretary_user.username, password='password')
+
+    response = client.get('/api/berth/' + str(berth.id) + '/')
+    assert response.status_code == 200
+
+
+@pytest.mark.django_db()
+def test_committee_member_list_berths(committee_member_user):
+    client = APIClient()
+    assert client.login(username=committee_member_user.username, password='password')
+
+    response = client.get('/api/berth/')
+    assert response.status_code == 200
+
+
+@pytest.mark.django_db()
+def test_committee_member_get_berth(committee_member_user, berth):
+    client = APIClient()
+    assert client.login(username=committee_member_user.username, password='password')
+
+    response = client.get('/api/berth/' + str(berth.id) + '/')
+    assert response.status_code == 200
+
+
+@pytest.mark.django_db()
+def test_ordinary_user_list_berths(ordinary_user):
+    client = APIClient()
+    assert client.login(username=ordinary_user.username, password='password')
+
+    response = client.get('/api/berth/')
+    assert response.status_code == 200
+
+
+@pytest.mark.django_db()
+def test_ordinary_user_get_berth(ordinary_user, berth):
+    client = APIClient()
+    assert client.login(username=ordinary_user.username, password='password')
+
+    response = client.get('/api/berth/' + str(berth.id) + '/')
+    assert response.status_code == 200
+
+
+@pytest.mark.django_db()
+def test_unauthenticated_list_berths():
+    client = APIClient()
+
+    response = client.get('/api/berth/')
+    assert response.status_code == 403
+
+
+@pytest.mark.django_db()
+def test_unauthenticated_get_berth(berth):
+    client = APIClient()
+
+    response = client.get('/api/berth/' + str(berth.id) + '/')
+    assert response.status_code == 403
+
+
+# POST
+
+@pytest.mark.django_db()
+def test_harbourmaster_post_berth(admin_user, harbourmaster_user, jetty):
+    client = APIClient()
+    assert client.login(username=admin_user.username, password='password')
+
+    response = client.get('/api/jetty/' + str(jetty.id) + '/')
+    jetty_url = json.loads(response.content.decode('utf-8'))['url']
+
+    assert client.login(username=harbourmaster_user.username, password='password')
+
+    response = client.post('/api/berth/', {
+        'jetty': jetty_url,
+        'name': '03'
+    }, format='json')
+    assert response.status_code == 403
+
+
+@pytest.mark.django_db()
+def test_secretary_post_berth(admin_user, secretary_user, jetty):
+    client = APIClient()
+    assert client.login(username=admin_user.username, password='password')
+
+    response = client.get('/api/jetty/' + str(jetty.id) + '/')
+    jetty_url = json.loads(response.content.decode('utf-8'))['url']
+
+    assert client.login(username=secretary_user.username, password='password')
+
+    response = client.post('/api/berth/', {
+        'jetty': jetty_url,
+        'name': '03'
+    }, format='json')
+    assert response.status_code == 403
+
+
+@pytest.mark.django_db()
+def test_committee_member_post_berth(admin_user, committee_member_user, jetty):
+    client = APIClient()
+    assert client.login(username=admin_user.username, password='password')
+
+    response = client.get('/api/jetty/' + str(jetty.id) + '/')
+    jetty_url = json.loads(response.content.decode('utf-8'))['url']
+
+    assert client.login(username=committee_member_user.username, password='password')
+
+    response = client.post('/api/berth/', {
+        'jetty': jetty_url,
+        'name': '03'
+    }, format='json')
+    assert response.status_code == 403
+
+
+@pytest.mark.django_db()
+def test_ordinary_user_post_berth(admin_user, ordinary_user, jetty):
+    client = APIClient()
+    assert client.login(username=admin_user.username, password='password')
+
+    response = client.get('/api/jetty/' + str(jetty.id) + '/')
+    jetty_url = json.loads(response.content.decode('utf-8'))['url']
+
+    assert client.login(username=ordinary_user.username, password='password')
+
+    response = client.post('/api/berth/', {
+        'jetty': jetty_url,
+        'name': '03'
+    }, format='json')
+    assert response.status_code == 403
+
+
+@pytest.mark.django_db()
+def test_unauthenticated_post_berth(admin_user, jetty):
+    client = APIClient()
+    assert client.login(username=admin_user.username, password='password')
+
+    response = client.get('/api/jetty/' + str(jetty.id) + '/')
+    jetty_url = json.loads(response.content.decode('utf-8'))['url']
+
+    client.logout()
+
+    response = client.post('/api/berth/', {
+        'jetty': jetty_url,
+        'name': '03'
+    }, format='json')
+    assert response.status_code == 403
+
+
+# PUT
+
+@pytest.mark.django_db()
+def test_harbourmaster_put_berth_name(admin_user, harbourmaster_user, berth):
+    client = APIClient()
+    assert client.login(username=admin_user.username, password='password')
+
+    response = client.get('/api/berth/' + str(berth.id) + '/')
+    berth_content = json.loads(response.content.decode('utf-8'))
+    del berth_content['url']
+
+    assert client.login(username=harbourmaster_user.username, password='password')
+
+    berth_content['name'] = '03'
+    response = client.put('/api/berth/' + str(berth.id) + '/', berth_content, format='json')
+    assert response.status_code == 403
+
+
+@pytest.mark.django_db()
+def test_harbourmaster_put_berth_boat(admin_user, harbourmaster_user, berth, boat):
+    client = APIClient()
+    assert client.login(username=admin_user.username, password='password')
+
+    response = client.get('/api/boat/' + str(boat.id) + '/')
+    boat_url = json.loads(response.content.decode('utf-8'))['url']
+
+    response = client.get('/api/berth/' + str(berth.id) + '/')
+    berth_content = json.loads(response.content.decode('utf-8'))
+    del berth_content['url']
+
+    assert client.login(username=harbourmaster_user.username, password='password')
+
+    berth_content['boat'] = boat_url
+    response = client.put('/api/berth/' + str(berth.id) + '/', berth_content, format='json')
+    assert response.status_code == 200
+
+
+@pytest.mark.django_db()
+def test_secretary_put_berth_name(admin_user, secretary_user, berth):
+    client = APIClient()
+    assert client.login(username=admin_user.username, password='password')
+
+    response = client.get('/api/berth/' + str(berth.id) + '/')
+    berth_content = json.loads(response.content.decode('utf-8'))
+    del berth_content['url']
+
+    assert client.login(username=secretary_user.username, password='password')
+
+    berth_content['name'] = '03'
+    response = client.put('/api/berth/' + str(berth.id) + '/', berth_content, format='json')
+    assert response.status_code == 403
+
+
+@pytest.mark.django_db()
+def test_secretary_put_berth_boat(admin_user, secretary_user, berth, boat):
+    client = APIClient()
+    assert client.login(username=admin_user.username, password='password')
+
+    response = client.get('/api/boat/' + str(boat.id) + '/')
+    boat_url = json.loads(response.content.decode('utf-8'))['url']
+
+    response = client.get('/api/berth/' + str(berth.id) + '/')
+    berth_content = json.loads(response.content.decode('utf-8'))
+    del berth_content['url']
+
+    assert client.login(username=secretary_user.username, password='password')
+
+    berth_content['boat'] = boat_url
+    response = client.put('/api/berth/' + str(berth.id) + '/', berth_content, format='json')
+    assert response.status_code == 403
+
+
+@pytest.mark.django_db()
+def test_committee_member_put_berth_name(admin_user, committee_member_user, berth):
+    client = APIClient()
+    assert client.login(username=admin_user.username, password='password')
+
+    response = client.get('/api/berth/' + str(berth.id) + '/')
+    berth_content = json.loads(response.content.decode('utf-8'))
+    del berth_content['url']
+
+    assert client.login(username=committee_member_user.username, password='password')
+
+    berth_content['name'] = '03'
+    response = client.put('/api/berth/' + str(berth.id) + '/', berth_content, format='json')
+    assert response.status_code == 403
+
+
+@pytest.mark.django_db()
+def test_committee_member_put_berth_boat(admin_user, committee_member_user, berth, boat):
+    client = APIClient()
+    assert client.login(username=admin_user.username, password='password')
+
+    response = client.get('/api/boat/' + str(boat.id) + '/')
+    boat_url = json.loads(response.content.decode('utf-8'))['url']
+
+    response = client.get('/api/berth/' + str(berth.id) + '/')
+    berth_content = json.loads(response.content.decode('utf-8'))
+    del berth_content['url']
+
+    assert client.login(username=committee_member_user.username, password='password')
+
+    berth_content['boat'] = boat_url
+    response = client.put('/api/berth/' + str(berth.id) + '/', berth_content, format='json')
+    assert response.status_code == 403
+
+
+@pytest.mark.django_db()
+def test_ordinary_user_put_berth_name(admin_user, ordinary_user, berth):
+    client = APIClient()
+    assert client.login(username=admin_user.username, password='password')
+
+    response = client.get('/api/berth/' + str(berth.id) + '/')
+    berth_content = json.loads(response.content.decode('utf-8'))
+    del berth_content['url']
+
+    assert client.login(username=ordinary_user.username, password='password')
+
+    berth_content['name'] = '03'
+    response = client.put('/api/berth/' + str(berth.id) + '/', berth_content, format='json')
+    assert response.status_code == 403
+
+
+@pytest.mark.django_db()
+def test_ordinary_user_put_berth_boat(admin_user, ordinary_user, berth, boat):
+    client = APIClient()
+    assert client.login(username=admin_user.username, password='password')
+
+    response = client.get('/api/boat/' + str(boat.id) + '/')
+    boat_url = json.loads(response.content.decode('utf-8'))['url']
+
+    response = client.get('/api/berth/' + str(berth.id) + '/')
+    berth_content = json.loads(response.content.decode('utf-8'))
+    del berth_content['url']
+
+    assert client.login(username=ordinary_user.username, password='password')
+
+    berth_content['boat'] = boat_url
+    response = client.put('/api/berth/' + str(berth.id) + '/', berth_content, format='json')
+    assert response.status_code == 403
+
+
+@pytest.mark.django_db()
+def test_unauthorized_put_berth_name(admin_user, berth):
+    client = APIClient()
+    assert client.login(username=admin_user.username, password='password')
+
+    response = client.get('/api/berth/' + str(berth.id) + '/')
+    berth_content = json.loads(response.content.decode('utf-8'))
+    del berth_content['url']
+
+    client.logout()
+
+    berth_content['name'] = '03'
+    response = client.put('/api/berth/' + str(berth.id) + '/', berth_content, format='json')
+    assert response.status_code == 403
+
+
+@pytest.mark.django_db()
+def test_unauthorized_put_berth_boat(admin_user, berth, boat):
+    client = APIClient()
+    assert client.login(username=admin_user.username, password='password')
+
+    response = client.get('/api/boat/' + str(boat.id) + '/')
+    boat_url = json.loads(response.content.decode('utf-8'))['url']
+
+    response = client.get('/api/berth/' + str(berth.id) + '/')
+    berth_content = json.loads(response.content.decode('utf-8'))
+    del berth_content['url']
+
+    client.logout()
+
+    berth_content['boat'] = boat_url
+    response = client.put('/api/berth/' + str(berth.id) + '/', berth_content, format='json')
+    assert response.status_code == 403
+
+
+# PATCH
+
+@pytest.mark.django_db()
+def test_harbourmaster_patch_berth_name(harbourmaster_user, berth):
+    client = APIClient()
+    assert client.login(username=harbourmaster_user.username, password='password')
+
+    response = client.patch('/api/berth/' + str(berth.id) + '/', {'name': 'Some Berth'}, format='json')
+    assert response.status_code == 403
+
+
+@pytest.mark.django_db()
+def test_harbourmaster_patch_berth_boat(admin_user, harbourmaster_user, berth, boat):
+    client = APIClient()
+    assert client.login(username=admin_user.username, password='password')
+
+    response = client.get('/api/boat/' + str(boat.id) + '/')
+    boat_url = json.loads(response.content.decode('utf-8'))['url']
+
+    assert client.login(username=harbourmaster_user.username, password='password')
+
+    response = client.patch('/api/berth/' + str(berth.id) + '/', {'boat': boat_url}, format='json')
+    assert response.status_code == 200
+
+
+@pytest.mark.django_db()
+def test_secretary_patch_berth_name(secretary_user, berth):
+    client = APIClient()
+    assert client.login(username=secretary_user.username, password='password')
+
+    response = client.patch('/api/berth/' + str(berth.id) + '/', {'name': 'Some Berth'}, format='json')
+    assert response.status_code == 403
+
+
+@pytest.mark.django_db()
+def test_secretary_patch_berth_boat(admin_user, secretary_user, berth, boat):
+    client = APIClient()
+    assert client.login(username=admin_user.username, password='password')
+
+    response = client.get('/api/boat/' + str(boat.id) + '/')
+    boat_url = json.loads(response.content.decode('utf-8'))['url']
+
+    assert client.login(username=secretary_user.username, password='password')
+
+    response = client.patch('/api/berth/' + str(berth.id) + '/', {'boat': boat_url}, format='json')
+    assert response.status_code == 403
+
+
+@pytest.mark.django_db()
+def test_committee_member_patch_berth_name(committee_member_user, berth):
+    client = APIClient()
+    assert client.login(username=committee_member_user.username, password='password')
+
+    response = client.patch('/api/berth/' + str(berth.id) + '/', {'name': 'Some Berth'}, format='json')
+    assert response.status_code == 403
+
+
+@pytest.mark.django_db()
+def test_committee_member_patch_berth_boat(admin_user, committee_member_user, berth, boat):
+    client = APIClient()
+    assert client.login(username=admin_user.username, password='password')
+
+    response = client.get('/api/boat/' + str(boat.id) + '/')
+    boat_url = json.loads(response.content.decode('utf-8'))['url']
+
+    assert client.login(username=committee_member_user.username, password='password')
+
+    response = client.patch('/api/berth/' + str(berth.id) + '/', {'boat': boat_url}, format='json')
+    assert response.status_code == 403
+
+
+@pytest.mark.django_db()
+def test_ordinary_user_patch_berth_name(ordinary_user, berth):
+    client = APIClient()
+    assert client.login(username=ordinary_user.username, password='password')
+
+    response = client.patch('/api/berth/' + str(berth.id) + '/', {'name': 'Some Berth'}, format='json')
+    assert response.status_code == 403
+
+
+@pytest.mark.django_db()
+def test_ordinary_user_patch_berth_boat(admin_user, ordinary_user, berth, boat):
+    client = APIClient()
+    assert client.login(username=admin_user.username, password='password')
+
+    response = client.get('/api/boat/' + str(boat.id) + '/')
+    boat_url = json.loads(response.content.decode('utf-8'))['url']
+
+    assert client.login(username=ordinary_user.username, password='password')
+
+    response = client.patch('/api/berth/' + str(berth.id) + '/', {'boat': boat_url}, format='json')
+    assert response.status_code == 403
+
+
+@pytest.mark.django_db()
+def test_unauthorized_patch_berth_name(berth):
+    client = APIClient()
+
+    response = client.patch('/api/berth/' + str(berth.id) + '/', {'name': 'Some Berth'}, format='json')
+    assert response.status_code == 403
+
+
+@pytest.mark.django_db()
+def test_unauthorized_patch_berth_boat(admin_user, berth, boat):
+    client = APIClient()
+    assert client.login(username=admin_user.username, password='password')
+
+    response = client.get('/api/boat/' + str(boat.id) + '/')
+    boat_url = json.loads(response.content.decode('utf-8'))['url']
+
+    client.logout()
+
+    response = client.patch('/api/berth/' + str(berth.id) + '/', {'boat': boat_url}, format='json')
+    assert response.status_code == 403
+
+
+# DELETE
+
+@pytest.mark.django_db()
+def test_secretary_delete_berth(secretary_user, berth):
+    client = APIClient()
+    assert client.login(username=secretary_user.username, password='password')
+
+    response = client.delete('/api/berth/' + str(berth.id) + '/')
+    assert response.status_code == 403
+
+
+@pytest.mark.django_db()
+def test_harbourmaster_delete_berth(harbourmaster_user, berth):
+    client = APIClient()
+    assert client.login(username=harbourmaster_user.username, password='password')
+
+    response = client.delete('/api/berth/' + str(berth.id) + '/')
+    assert response.status_code == 403
+
+
+@pytest.mark.django_db()
+def test_committee_member_delete_berth(committee_member_user, berth):
+    client = APIClient()
+    assert client.login(username=committee_member_user.username, password='password')
+
+    response = client.delete('/api/berth/' + str(berth.id) + '/')
+    assert response.status_code == 403
+
+
+@pytest.mark.django_db()
+def test_ordinary_user_delete_berth(ordinary_user, berth):
+    client = APIClient()
+    assert client.login(username=ordinary_user.username, password='password')
+
+    response = client.delete('/api/berth/' + str(berth.id) + '/')
+    assert response.status_code == 403
+
+
+@pytest.mark.django_db()
+def test_unauthenticated_delete_berth(berth):
+    client = APIClient()
+
+    response = client.delete('/api/berth/' + str(berth.id) + '/')
     assert response.status_code == 403
 
