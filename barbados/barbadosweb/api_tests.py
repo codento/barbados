@@ -54,6 +54,7 @@ def test_create_user(admin_user):
     content = json.loads(response.content.decode('utf-8'))
     assert isinstance(content, dict)
     assert content['first_name'] == 'John'
+    assert response['Location'] == content['url']
 
     id = get_id(content['url'])
     user = models.User.objects.get(pk=id)
@@ -153,6 +154,7 @@ def test_create_boat(admin_user, ordinary_user):
     content = json.loads(response.content.decode('utf-8'))
     assert isinstance(content, dict)
     assert content['name'] == 'Titanic'
+    assert response['Location'] == content['url']
 
     id = get_id(content['url'])
     boat = models.Boat.objects.get(pk=id)
@@ -247,6 +249,7 @@ def test_create_club(admin_user):
     content = json.loads(response.content.decode('utf-8'))
     assert isinstance(content, dict)
     assert content['name'] == 'Some Yacht Club'
+    assert response['Location'] == content['url']
 
     id = get_id(content['url'])
     club = models.Club.objects.get(pk=id)
@@ -346,6 +349,7 @@ def test_create_harbour(admin_user, club):
     content = json.loads(response.content.decode('utf-8'))
     assert isinstance(content, dict)
     assert content['name'] == 'Some Harbour'
+    assert response['Location'] == content['url']
 
     id = get_id(content['url'])
     harbour = models.Harbour.objects.get(pk=id)
@@ -445,6 +449,7 @@ def test_create_jetty(admin_user, harbour):
     content = json.loads(response.content.decode('utf-8'))
     assert isinstance(content, dict)
     assert content['name'] == 'A'
+    assert response['Location'] == content['url']
 
     id = get_id(content['url'])
     jetty = models.Jetty.objects.get(pk=id)
@@ -544,6 +549,7 @@ def test_create_berth(admin_user, jetty):
     content = json.loads(response.content.decode('utf-8'))
     assert isinstance(content, dict)
     assert content['name'] == '01'
+    assert response['Location'] == content['url']
 
     id = get_id(content['url'])
     berth = models.Berth.objects.get(pk=id)
