@@ -27,10 +27,10 @@ Options:
         def make_superuser(user):
             user.is_superuser = True
 
-        users = {'harbourmaster': ('Harbourmaster',),
-                 'secretary': ('Membership secretary',),
+        users = {'harbourmaster': ('Harbourmaster', 'Committee member', 'Member'),
+                 'secretary': ('Membership secretary', 'Committee member', 'Member'),
                  'admin': make_superuser,
-                 'user': None}
+                 'user': ('Member',)}
 
         with transaction.atomic(using=arguments['--database']):
             for username, todo in users.items():

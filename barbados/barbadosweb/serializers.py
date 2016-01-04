@@ -12,6 +12,7 @@ class UserSerializer(serializers.HyperlinkedModelSerializer):
     class Meta:
         model = models.User
         fields = (
+            'first_name', 'last_name',
             'url', 'username', 'email',
             'birth_date', 'phone_number',
             'street_address', 'city', 'country_code',
@@ -142,7 +143,7 @@ class BerthSerializer(serializers.HyperlinkedModelSerializer):
     url = serializers.HyperlinkedIdentityField(view_name='api:berth-detail')
 
     boat = serializers.HyperlinkedRelatedField(
-        queryset=models.Boat.objects.all(), view_name='api:boat-detail', allow_null=True)
+        queryset=models.Boat.objects.all(), view_name='api:boat-detail', allow_null=True, required=False)
     jetty = serializers.HyperlinkedRelatedField(queryset=models.Jetty.objects.all(), view_name='api:jetty-detail')
 
     class Meta:
